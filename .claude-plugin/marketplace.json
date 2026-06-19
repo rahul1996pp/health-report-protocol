@@ -1,0 +1,16 @@
+{
+  "name": "health-tools",
+  "owner": { "name": "Rahul" },
+  "description": "Personal health report analysis — a protocol that turns a folder of medical reports into a traceable extraction, trends, finding interlinks, and a self-contained offline HTML dashboard. Informational only, never diagnostic.",
+  "plugins": [
+    {
+      "name": "health-report-analysis",
+      "source": "./plugins/health-report-analysis",
+      "description": "Analyze medical reports (labs, imaging, ECG/Echo/TMT, prescriptions, eye) into a traceable extraction, trends, interlinks, and an offline dashboard a non-medical person can understand. Never diagnoses; keeps all data local.",
+      "version": "1.0.0",
+      "author": { "name": "Rahul" },
+      "license": "Apache-2.0",
+      "keywords": ["health", "medical", "lab", "dashboard", "reports"]
+    }
+  ]
+}

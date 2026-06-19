@@ -1,0 +1,43 @@
+# ─────────────────────────────────────────────────────────────
+# SAFETY NET — never commit personal health data to this repo.
+# Keep your real health folder OUTSIDE this repo. These patterns
+# block the protocol's generated/output files if they ever appear here.
+# ─────────────────────────────────────────────────────────────
+health_dashboard_*.html
+*_companion.html
+extracted_data.md
+health_analysis_*.md
+health_memory.json
+rename_log.txt
+move_log.txt
+
+# Body-system folders (only if accidentally copied in)
+heart/
+thyroid-neck/
+liver-abdomen/
+kidney-urinary/
+eyes/
+ent/
+skin/
+dental/
+bones-joints/
+blood-labs/
+prescriptions/
+other/
+
+# Source scans / documents (never publish)
+*.pdf
+*.jpg
+*.jpeg
+*.png
+*.heic
+*.dcm
+
+# ...but allow the synthetic demo screenshots used in the README
+!docs/screenshots/*.png
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

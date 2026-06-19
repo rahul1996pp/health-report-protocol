@@ -1,0 +1,10 @@
+{
+  "name": "health-report-analysis",
+  "description": "Analyze a folder of personal medical reports into a traceable extraction, trend analysis, finding interlinks, and a single self-contained offline HTML dashboard. Never diagnoses; explains in plain language; keeps all data on the user's machine.",
+  "version": "1.0.0",
+  "author": { "name": "Rahul" },
+  "homepage": "https://github.com/rahul1996pp/health-report-protocol",
+  "repository": "https://github.com/rahul1996pp/health-report-protocol",
+  "license": "Apache-2.0",
+  "keywords": ["health", "medical", "lab", "dashboard", "reports", "offline"]
+}

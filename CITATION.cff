@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it."
+title: "Health Report Analysis Protocol"
+abstract: "A reusable Claude Code protocol that turns a folder of personal medical reports into a traceable extraction, trends, finding interlinks, and a fully-offline HTML dashboard. Informational only, not medical advice."
+type: software
+authors:
+  - given-names: Rahul
+    alias: rahul1996pp
+repository-code: "https://github.com/rahul1996pp/health-report-protocol"
+url: "https://github.com/rahul1996pp/health-report-protocol"
+license: Apache-2.0
+version: "1.0.0"
+date-released: "2026-06-19"
+keywords:
+  - claude-code
+  - health
+  - medical-reports
+  - dashboard
+  - offline

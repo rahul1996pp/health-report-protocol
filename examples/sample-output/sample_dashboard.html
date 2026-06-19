@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:,">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rahul — Health Companion (DEMO · synthetic)</title>
+<style>
+  :root{--bg:#f6f4ee;--paper:#fffdf8;--ink:#1d2a2c;--muted:#76746c;--line:#e7e2d6;
+    --sage:#5b8a72;--sage-d:#3f6b56;--clay:#c1654b;--gold:#bf8f2e;--sky:#4a7a96;--plum:#7d5a7d;
+    --red:#c0392b;--green:#2e7d54;--amber:#cf8a1e;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.55}
+  h1,h2,h3{font-family:var(--serif)}.wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+  .hero{background:linear-gradient(135deg,#2f4f43,#3f6b56);color:#fff;padding:22px 0}
+  .hero h1{font-size:26px}.who{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;font-size:12.5px}
+  .who span{background:rgba(255,255,255,.14);border-radius:999px;padding:3px 10px}
+  .tabbar{position:sticky;top:0;background:var(--paper);border-bottom:1px solid var(--line);z-index:6}
+  .tabbar .row{display:flex;gap:3px;overflow-x:auto;padding:7px 0}
+  .tabbtn{border:none;background:none;font:600 13.5px var(--sans);color:var(--ink);padding:8px 11px;border-radius:9px;cursor:pointer;white-space:nowrap}
+  .tabbtn.active{background:var(--sage);color:#fff}.ic{margin-right:5px}
+  .tab{display:none;animation:fade .3s ease}.tab.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .block{padding:18px 0}
+  h2.sec{font-size:18px;margin:8px 0}h2.sec small{font-weight:400;color:var(--muted);font-size:13px;font-family:var(--sans)}
+  .lead{color:var(--muted);font-size:14px;margin:4px 0 12px}.note{font-size:13px;color:var(--muted)}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin:12px 0}
+  .grid{display:grid;gap:12px}.g2{grid-template-columns:1fr 1fr}@media(max-width:680px){.g2{grid-template-columns:1fr}}
+  .disc{background:#fdf3e7;border:1px solid #f0d9b8;border-left:5px solid var(--amber);border-radius:12px;padding:12px 14px;font-size:13.5px}
+  .emerg{margin-top:8px;font-size:12.5px;color:#7a4a12}
+  .caveat{margin-top:12px;background:#f1ecf3;border:1px solid #d9cbe0;border-left:5px solid var(--plum);border-radius:12px;padding:12px 14px;font-size:13.5px;color:#43354b}
+  .caveat .emerg{color:#5e4a6b}
+  .estbadge{display:inline-block;font-size:10.5px;font-weight:700;color:var(--plum);background:#ece4f0;border:1px dashed #c8b3d3;border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+  .chart polyline.est{stroke-dasharray:6 5;stroke-dashoffset:0;animation:none;opacity:.95}
+  .note-card{background:#eef4f0;border:1px solid #d6e6dd;border-radius:12px;padding:12px 14px;font-size:13.5px}
+  ul.tick{list-style:none}ul.tick li{position:relative;padding-left:22px;margin:7px 0;font-size:14px}
+  ul.tick li::before{content:'✓';position:absolute;left:0;color:var(--sage-d);font-weight:700}
+  .statlist{list-style:none}.statlist li{display:flex;align-items:center;gap:10px;padding:9px 2px;border-bottom:1px dashed var(--line);font-size:14px}
+  .statlist li:last-child{border-bottom:0}.statlist .name{flex:1}.statlist .v{font-weight:700}
+  .statlist li.link{cursor:pointer;border-radius:8px;margin:0 -6px;padding-left:8px;padding-right:8px}
+  .statlist li.link:hover{background:#f1f4ef}.statlist li.link .name{color:var(--sage-d)}
+  .dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;border:1.5px solid rgba(0,0,0,.12)}
+  .d-high{background:var(--red)}.d-low{background:var(--amber)}.d-norm{background:var(--green)}.d-watch{background:var(--plum)}
+  .src{font-size:11px;color:var(--muted)}
+  .srclink{display:inline-block;margin-top:8px;font-size:12px;color:var(--sage-d);text-decoration:underline dotted}
+  table.tbl{width:100%;table-layout:fixed;border-collapse:collapse;font-size:13px;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  table.tbl td,table.tbl th{overflow-wrap:anywhere}
+  table.tbl th,table.tbl td{border-bottom:1px solid var(--line);padding:8px 9px;text-align:left;vertical-align:middle}
+  table.tbl th{background:#eef1ec;font-size:12px}table.tbl td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+  .mname{font-weight:600;color:var(--ink);background:none;border:none;font-size:13px;text-align:left;cursor:pointer;padding:0}
+  .mname.link{color:var(--sage-d);text-decoration:underline dotted}
+  .info{border:none;background:#eef1ec;color:var(--sage-d);width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:700;cursor:pointer;margin-right:6px}
+  tr.expl td{background:#f4f6f2;color:#42514a;font-size:12.5px}
+  .syshead{font-size:14px;color:var(--sage-d);margin:14px 0 6px;font-weight:700;font-family:var(--serif)}
+  .pilltag{font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px;white-space:nowrap}
+  .s-high{background:#f8e3dd;color:#8c3322}.s-low{background:#f7ecd2;color:#8a6a1e}.s-norm{background:#e0efe6;color:var(--green)}.s-watch{background:#ece4f0;color:#6a4a78}
+  .arrow{font-weight:700}.a-up{color:var(--red)}.a-down{color:var(--green)}.a-flat{color:var(--muted)}.a-fluct{color:var(--amber)}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 12px}
+  .chip{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 12px;font:600 12.5px var(--sans);color:var(--ink);cursor:pointer}
+  .chip.on{background:var(--sage);border-color:var(--sage);color:#fff}
+  .search{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:8px 12px;font:500 13px var(--sans);min-width:180px}
+  .chartcard{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:15px 16px 12px;margin-bottom:14px;scroll-margin-top:64px}
+  .chartcard.flash,.flash{animation:flash 1.7s ease}
+  @keyframes flash{0%{box-shadow:0 0 0 0 rgba(91,138,114,0)}12%{box-shadow:0 0 0 4px rgba(91,138,114,.55)}100%{box-shadow:0 0 0 0 rgba(91,138,114,0)}}
+  tr.flash>td{animation:flashrow 1.7s ease}@keyframes flashrow{0%,100%{background:transparent}28%{background:rgba(191,143,46,.30)}}
+  .chartcard .ch-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+  .chartcard h3{font-size:16px}.chartcard p{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .chart svg{width:100%;height:auto;display:block}
+  .chart polyline{stroke-dasharray:1100;stroke-dashoffset:1100;animation:draw 1.1s ease forwards}@keyframes draw{to{stroke-dashoffset:0}}
+  .lg{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.lgi{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:3px 9px;cursor:pointer;background:var(--paper)}
+  .lgi.off{opacity:.4;text-decoration:line-through}.lgi .sw{width:10px;height:10px;border-radius:2px}
+  .ctip{position:fixed;z-index:300;background:#1d2a2c;color:#fff;font-size:12px;padding:6px 9px;border-radius:7px;pointer-events:none;opacity:0;transition:opacity .1s;white-space:nowrap}
+  .cascade{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-bottom:13px}
+  .cascade .conf{float:right}.chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+  .node{background:#f1efe6;border:1px solid var(--line);border-radius:10px;padding:7px 11px;font-size:13px;font-weight:600}
+  .node.out{background:#f8e3dd;border-color:#e9c2b7;color:#8c3322}.node.mech{background:#e6eef2;border-color:#cbdde6;color:#2f5667;font-weight:500;font-style:italic}
+  .node.link{cursor:pointer}.node.link:hover{box-shadow:0 0 0 2px var(--sage)}.node.link::after{content:' ↗';font-size:10px;opacity:.6}
+  .sep{color:var(--muted);font-size:17px;font-weight:700}
+  .conf{font-size:11px;font-weight:700;border-radius:6px;padding:2px 8px}.c-strong{background:#e0efe6;color:var(--green)}.c-mod{background:#f7ead0;color:var(--amber)}.c-spec{background:#ece9e1;color:var(--muted)}
+  .cnar{margin-top:11px;font-size:13px;color:#3c4a43;background:#f3f6f2;border-left:4px solid var(--sage);border-radius:9px;padding:10px 12px}.cnar b{color:var(--sage-d)}
+  .cdo{margin-top:11px;font-size:13px;color:#34433c;background:#eef4f0;border-left:4px solid var(--green);border-radius:9px;padding:10px 13px}
+  .cdo>b{color:var(--sage-d)}.cdo .dolist{margin:7px 0 0 18px}.cdo .dolist li{margin:5px 0}
+  .relchips,.relrow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:10px}
+  .relrow{margin-top:18px;padding-top:12px;border-top:1px dashed var(--line)}.relrow .rl,.relchips .rl{font-size:12px;color:var(--muted);font-weight:700}
+  .golink{display:inline-block;background:#eef1ec;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font:600 11.5px var(--sans);color:var(--sage-d);cursor:pointer}
+  .golink:hover{background:var(--sage);border-color:var(--sage);color:#fff}
+  .prog{margin:13px 0}.prog .top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+  .bar{height:13px;background:#ece9df;border-radius:99px;overflow:hidden}.bar>span{display:block;height:100%;width:0;border-radius:99px;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+  .fill-good{background:linear-gradient(90deg,#7bbf9a,#3f6b56)}.fill-warn{background:linear-gradient(90deg,#e7b86a,#cf8a1e)}.fill-bad{background:linear-gradient(90deg,#e0937e,#c0392b)}
+  .check{display:flex;gap:11px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:12px 13px;margin-bottom:9px;cursor:pointer}
+  .check input{width:20px;height:20px;margin-top:1px;accent-color:var(--sage);flex:0 0 auto}.check .ct{font-size:14px}.check .cd{font-size:12.5px;color:var(--muted);margin-top:2px}.check.done .ct{text-decoration:line-through;color:var(--muted)}
+  .exgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .exfig{width:100%;height:110px;background:#eef4f0;border-radius:10px;margin-bottom:10px;display:block}
+  .exwhy2{font-size:12.5px;color:#3c4a43;background:#f3f6f2;border-radius:8px;padding:8px 10px;margin-top:8px}
+  .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}@media(max-width:680px){.week{grid-template-columns:repeat(2,1fr)}}
+  .day{background:#f4f6f2;border:1px solid var(--line);border-radius:10px;padding:8px;font-size:12px;text-align:center}.day b{display:block;color:var(--sage-d);margin-bottom:3px}
+  .foodgroup{margin-top:14px}.foodgroup>h3{font-size:15px;margin-bottom:2px}
+  .foodcols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}@media(max-width:680px){.foodcols{grid-template-columns:1fr}}
+  .foodcol{border-radius:12px;padding:12px 14px;border:1px solid var(--line)}
+  .foodcol.ok{background:#eef4f0;border-color:#d6e6dd}.foodcol.lim{background:#fdf3e7;border-color:#f0d9b8}
+  .foodcol h4{font-size:13.5px;margin-bottom:4px}.foodcol.ok h4{color:var(--green)}.foodcol.lim h4{color:#a9701a}
+  .foodcol ul{list-style:none}.foodcol li{font-size:13px;margin:8px 0}
+  .foodcol li b{color:var(--ink)}.foodcol li .why{color:var(--muted);display:block;font-size:11.8px;margin-top:1px}
+  .foodcol li .swap{color:var(--sage-d);display:block;font-size:11.8px;margin-top:1px}.foodcol li .swap b{color:var(--sage-d)}
+  .covgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:4px}
+  .covtile{display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--paper);text-align:left;font:inherit;color:var(--ink)}
+  button.covtile{cursor:pointer}button.covtile:hover{box-shadow:0 0 0 2px var(--sage)}
+  .covtile .st{font-size:11.5px;font-weight:700}.covtile.ok{border-left:4px solid var(--green)}.covtile.part{border-left:4px solid var(--amber)}.covtile.no{border-left:4px solid #cdcabf;opacity:.92}
+  .covtile.ok .st{color:var(--green)}.covtile.part .st{color:#8a6a1e}.covtile.no .st{color:var(--muted)}
+  .covtile .sn{font-size:13px;font-weight:600}
+  .testgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;margin-top:8px}
+  .testcard{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:13px 15px}
+  .testcard .th{display:flex;align-items:center;gap:8px;margin-bottom:2px}.testcard .th h3{font-size:14.5px}
+  .testcard .stp{margin-left:auto;flex:0 0 auto;font-size:10.5px;font-weight:700;border-radius:999px;padding:2px 9px}
+  .stp.ok{background:#e0efe6;color:var(--green)}.stp.part{background:#f7ead0;color:#8a6a1e}.stp.no{background:#efece4;color:var(--muted)}
+  .tcol{margin-top:7px}.tcol .lab{font-size:11.5px;font-weight:700;border-radius:6px;padding:2px 8px}
+  .lab-imp{background:#f8e3dd;color:#8c3322}.lab-opt{background:#eef1ec;color:#4a5a52}
+  .tlist{list-style:none;margin-top:6px}.tlist li{font-size:13px;margin:6px 0}.tlist li b{color:var(--ink)}.tlist li .why{color:var(--muted);display:block;font-size:11.8px}
+  .doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-bottom:12px}
+  .doc h3{font-size:16px}.doc .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}@media(max-width:680px){.doc .two{grid-template-columns:1fr}}
+  .doc .two h4{font-size:13px;margin-bottom:4px;color:var(--sage-d)}.doc ul{margin-left:18px;font-size:13px}.doc li{margin:4px 0}
+  .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  footer{font-size:12px;color:var(--muted);text-align:center;margin:26px 0}
+  .demo{background:#eef4f0;border:1px dashed var(--sage);border-radius:10px;padding:8px 12px;font-size:12.5px;color:var(--sage-d);margin:10px 0}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.chart polyline{stroke-dashoffset:0}}
+  @media print{.tabbar,.toolbar{display:none!important}.tab{display:block!important}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <h1>My Health Companion</h1>
+  <div class="who"><span>👤 Rahul · Anantapur, India</span><span>🍽️ South-Indian (Rayalaseema)</span><span>🧪 3 lab panels</span><span>⚠️ DEMO · 100% synthetic data</span></div>
+</div></header>
+<nav class="tabbar"><div class="wrap"><div class="row" id="tabrow">
+  <button class="tabbtn active" data-tab="overview"><span class="ic">🏠</span>Overview</button>
+  <button class="tabbtn" data-tab="trends"><span class="ic">📈</span>Trends</button>
+  <button class="tabbtn" data-tab="ahead"><span class="ic">🔮</span>What's Ahead</button>
+  <button class="tabbtn" data-tab="numbers"><span class="ic">🔢</span>My Numbers</button>
+  <button class="tabbtn" data-tab="map"><span class="ic">🧭</span>Full Map</button>
+  <button class="tabbtn" data-tab="exercise"><span class="ic">🏋️</span>Exercise</button>
+  <button class="tabbtn" data-tab="suggestions"><span class="ic">🌿</span>Suggestions</button>
+  <button class="tabbtn" data-tab="doctors"><span class="ic">🩺</span>Doctors</button>
+  <button class="tabbtn" data-tab="unclear"><span class="ic">❓</span>Unclear</button>
+</div></div></nav>
+<div class="wrap">
+
+<div class="tab active" id="tab-overview"><section class="block">
+  <div class="disc"><strong>⚠️ Informational organization only — not a medical diagnosis.</strong> This is a <b>synthetic demo</b> (fictional person "Rahul", invented values). The real protocol takes values only from your reports or your confirmed answers, and asks you to verify everything with a doctor.
+  <div class="emerg">🚑 <strong>Not for emergencies.</strong> For severe symptoms call your local emergency number.</div></div>
+  <div class="note-card" style="margin-top:12px">👋 <strong>How to use this:</strong> tap the tabs. <b>Trends</b> = each marker over time. <b>What's Ahead</b> = where your numbers may head (rough estimates only). <b>My Numbers</b> = every result; tap <b>ⓘ</b> for a plain explanation. <b>Full Map</b> connects findings and says what to do. ✨ <b>Tip:</b> highlighted findings jump to the matching chart.</div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card" style="border-left:5px solid var(--green)"><h3>🌟 What's going well</h3><ul class="tick"><li>Vitamin D improved 22 → 28 → 35 (now normal).</li><li>Thyroid (TSH), liver (ALT) and haemoglobin all normal.</li></ul></div>
+    <div class="card" style="border-left:5px solid var(--clay)"><h3>🎯 If you do only 3 things</h3><ul class="tick">
+      <li><b>Trim refined carbs &amp; sugar</b> <button class="golink" data-go="c:lipid">lipids ↗</button> <button class="golink" data-go="c:a1c">HbA1c ↗</button></li>
+      <li><b>Walk ~30 min most days</b> <button class="golink" data-go="tab:exercise">Exercise ↗</button></li>
+      <li><b>Recheck lipids &amp; HbA1c</b> <button class="golink" data-go="tab:doctors">Doctors ↗</button></li></ul></div>
+  </div>
+  <h2 class="sec" style="margin-top:18px">At a glance <small>— latest status</small></h2>
+  <div class="grid g2"><div class="card"><ul class="statlist" id="glanceA"></ul></div><div class="card"><ul class="statlist" id="glanceB"></ul></div></div>
+  <div class="demo">Imaging &amp; scans: <b>none in this example</b> (blood panels only). When real scans exist, the protocol lists each finding here in plain words with an optional link to the file.</div>
+</section></div>
+
+<div class="tab" id="tab-trends"><section class="block">
+  <h2 class="sec">Trends over time <small>— green band = normal range</small></h2>
+  <p class="lead"><strong>How to read this:</strong> each dot is one test date; inside the green band = in range. Hover/tap a dot for the value + the reference range. Tap a legend item to hide a line.</p>
+  <div class="toolbar"><span style="font-size:12.5px;color:var(--muted)">Show:</span><span id="trendFilters"></span><button class="chip on" id="bandChip">Reference band</button></div>
+  <div id="charts"></div>
+  <h2 class="sec" style="margin-top:20px">Retest targets &amp; progress <small>— current vs. a target to discuss</small></h2>
+  <p class="lead">Targets are for <b>discussion with your doctor</b>, not self-treatment.</p>
+  <div id="progressWrap"><div class="grid g2">
+    <div class="card"><h3>🫀 Lipid targets</h3><div id="prog-lipid"></div></div>
+    <div class="card"><h3>🩸 Metabolic &amp; vitamins</h3><div id="prog-meta"></div></div></div></div>
+</section></div>
+
+<div class="tab" id="tab-ahead"><section class="block">
+  <h2 class="sec">What's Ahead <small>— where your own numbers are heading</small></h2>
+  <div class="disc"><strong>⚠️ Informational only — not a medical diagnosis.</strong> Built using only this person's own past results.</div>
+  <div class="caveat"><strong>🔮 Please read first.</strong> These projections use <b>only your own past results</b> and assume nothing changes. They are <b>rough estimates, can easily be wrong, and are NOT a forecast</b> of your health — always confirm with your doctor.
+  <div class="emerg">🚑 <strong>Not for emergencies.</strong> For severe symptoms call your local emergency number.</div></div>
+
+  <h2 class="sec" style="margin-top:18px">📉 Projected numbers <small>— dotted = estimate, may be wrong</small></h2>
+  <p class="lead">A dotted line continues each chart <b>if the recent trend simply carried on</b>. It is not a measured result. Only markers with <b>3 or more real tests</b> and a steady direction are projected.</p>
+  <div id="aheadCharts"></div>
+
+  <h2 class="sec" style="margin-top:20px">🧭 Risk trajectory <small>— what your real values are doing</small></h2>
+  <p class="lead">Each line below quotes your <b>actual</b> values and dates — no invented numbers.</p>
+  <div class="grid g2" id="riskTraj"></div>
+
+  <h2 class="sec" style="margin-top:18px">👀 Conditions to watch <small>— qualitative only, discuss with your doctor</small></h2>
+  <p class="lead">The <i>kinds</i> of pattern these findings point toward — <b>no percentages, nothing named as certain</b>. Each lists the tests a doctor uses to check it. Confidence: <span class="conf c-strong">strong</span> · <span class="conf c-mod">moderate</span> · <span class="conf c-spec">speculative</span>.</p>
+  <div id="watch"></div>
+</section></div>
+
+<div class="tab" id="tab-numbers"><section class="block">
+  <h2 class="sec">My Numbers <small>— latest value per marker</small></h2>
+  <p class="lead">Tap <span class="info" aria-hidden="true">i</span> for a plain explanation. Status: <span class="pilltag s-high">▲ HIGH</span> <span class="pilltag s-norm">● NORMAL</span> · trend ▲ rising ▼ falling → stable. <b>Latest = 12 Aug 2024 panel.</b></p>
+  <div class="toolbar"><input class="search" id="numSearch" placeholder="🔍 Search marker…"><button class="chip on" data-status="all">All</button><button class="chip" data-status="out">Out of range</button><button class="chip" data-status="high">High</button></div>
+  <div id="numbers"></div>
+</section></div>
+
+<div class="tab" id="tab-map"><section class="block">
+  <h2 class="sec">The Full Map <small>— how your findings connect, in plain words</small></h2>
+  <p class="lead">Each chain has a <b>"What's happening to you"</b> note and a <b>"What you can do about it"</b> block. Confidence: <span class="conf c-strong">strong</span> · <span class="conf c-mod">moderate</span> · <span class="conf c-spec">speculative</span>.</p>
+  <div id="cascades"></div>
+  <h2 class="sec" style="margin-top:14px">🔎 Hidden areas <small>— quiet findings worth knowing</small></h2>
+  <div class="grid g2" id="hidden"></div>
+</section></div>
+
+<div class="tab" id="tab-exercise"><section class="block">
+  <h2 class="sec">Exercise <small>— a friendly guide, with the "why" explained</small></h2>
+  <div class="note-card">Start gently and build. <b>This is not medical clearance</b> — confirm with your doctor before starting or changing exercise. Each type below explains <b>what it is</b> and <b>why it helps YOUR numbers</b>.</div>
+  <div class="exgrid" id="exgrid" style="margin-top:14px"></div>
+  <h2 class="sec" style="margin-top:18px">A simple week (example to discuss)</h2>
+  <div class="card"><div class="week" id="week"></div><p class="note" style="margin-top:8px">A template, not a prescription.</p></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card" style="border-left:5px solid var(--green)"><h3>In one line: why this matters</h3><ul class="tick" id="exwhy"></ul></div>
+    <div class="card" style="border-left:5px solid var(--clay)"><h3>⛔ Stop &amp; seek help if…</h3><ul style="margin-left:18px;font-size:14px"><li>Chest pain or tightness</li><li>Severe breathlessness</li><li>Dizziness or fainting</li></ul></div>
+  </div>
+</section></div>
+
+<div class="tab" id="tab-suggestions"><section class="block">
+  <h2 class="sec">Suggestions <small>— plain-language, data-supported</small></h2>
+  <p class="lead">Food guidance is <b>location-aware</b> (Anantapur / South-Indian). Medical actions framed as "discuss with your doctor."</p>
+  <div class="grid g2" id="suggestions"></div>
+  <h2 class="sec" style="margin-top:16px">🍽️ Can enjoy vs. best to have rarely <small>— local, tied to your numbers</small></h2>
+  <p class="lead">Supportive, not "banned" — smaller portions &amp; swaps, framed for South-Indian (Rayalaseema) food. Each "rarely" item has a realistic local swap. Discuss with your doctor or a dietitian.</p>
+  <div id="food"></div>
+</section></div>
+
+<div class="tab" id="tab-doctors"><section class="block">
+  <h2 class="sec">Doctors &amp; next steps <small>— who, what to ask, what to do</small></h2>
+  <p class="lead">In priority order — all "discuss with your doctor," never orders.</p>
+  <div id="doctors"></div>
+  <h2 class="sec" style="margin-top:18px">🗺️ Body coverage so far <small>— what your reports have checked</small></h2>
+  <p class="lead">From your reports only: <b>✅ checked</b> · <b>🟡 seen only indirectly</b> · <b>⭕ not assessed</b>. Tap a checked tile to jump to its results.</p>
+  <div class="covgrid" id="coverage"></div>
+  <h2 class="sec" style="margin-top:18px">🔬 Scans &amp; tests to know more <small>— ❗ important vs ➖ optional, and why</small></h2>
+  <div class="caveat" style="margin-top:0">🤖 <strong>These are general AI suggestions, not personalised to your full history</strong> — your doctor decides what you actually need. No medicines or doses here, just tests to discuss.
+  <div class="emerg">🚑 <strong>Not for emergencies.</strong> For severe symptoms call your local emergency number.</div></div>
+  <div id="tests"></div>
+  <div class="card" id="screennote" style="margin-top:12px"></div>
+  <h2 class="sec" style="margin-top:18px">Follow-up checklist <small>— tap to tick off (resets on reload)</small></h2>
+  <div class="prog"><div class="top"><span><b id="ck-count">0</b> of <span id="ck-total">0</span> done</span><span id="ck-pct">0%</span></div><div class="bar"><span class="fill-good" id="ck-bar"></span></div></div>
+  <div id="checklist"></div>
+</section></div>
+
+<div class="tab" id="tab-unclear"><section class="block">
+  <h2 class="sec">Unclear items <small>— resolved vs. still to verify</small></h2>
+  <p class="lead">Nothing here was guessed or plotted. ✅ Resolved = you confirmed it.</p>
+  <div class="card" style="border-left:5px solid var(--green)"><h3>✅ Resolved (confirmed by you)</h3><ul class="tick" id="resolved"></ul></div>
+  <div class="grid g2" id="unclear"></div>
+</section></div>
+
+<footer class="wrap"><b>Generated on 22 Jun 2026</b> · <b>synthetic demo</b>, fictional data · fully offline, nothing sent anywhere · no browser storage.<br>To update: drop new reports into this folder and re-run.</footer>
+</div>
+<div class="ctip" id="ctip"></div>
+<script>
+const LBL=['Aug 2023','Feb 2024','Aug 2024'];
+const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SER={a1c:[5.3,5.5,5.7],glu:[90,92,95],tc:[198,210,225],tg:[145,160,180],ldl:[120,130,140],hdl:[46,45,44],tsh:[2.0,2.1,2.4],alt:[32,30,28],vitd:[22,28,35],hb:[14.0,14.2,14.5]};
+// What's-Ahead projections — estimate for the NEXT panel if the recent trend simply continued (≥3 real points only)
+const PROJ_LBL='Feb 2025 (est.)';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+const GLANCE_A=[['Total cholesterol','225 mg/dL','high','Rising; target <200','c:lipid'],['LDL cholesterol','140 mg/dL','high','Rising; target <100','c:lipid'],['Triglycerides','180 mg/dL','high','Rising; target <150','c:lipid'],['HbA1c','5.7 %','high','Entered pre-diabetic band','c:a1c']];
+const GLANCE_B=[['Vitamin D','35 ng/mL','norm','Improved 22 → 35','c:vitd'],['Thyroid (TSH)','2.4 µIU/mL','norm','Normal'],['Liver (ALT)','28 U/L','norm','Normal'],['Haemoglobin','14.5 g/dL','norm','Normal']];
+
+const EXPL={
+'HbA1c':'Your average blood sugar over ~3 months. 5.7–6.4% is the "pre-diabetes" zone — yours just reached 5.7%, an early amber flag that diet and movement can pull back down.',
+'Glucose – fasting':'Blood sugar after an overnight fast. Yours is high-normal — fine now, worth watching alongside the HbA1c.',
+'Total cholesterol':'All cholesterol added together. Yours is above target (225; aim <200) and rising.',
+'Triglycerides':'A fat carried in the blood; high levels raise heart risk. Yours (180; target <150) moves most with diet and exercise.',
+'LDL':'The "bad" cholesterol that builds up in artery walls. Yours rose to 140 (target <100) — a key number to bring down.',
+'HDL':'The "good" cholesterol that clears fat from arteries; higher is better. Yours is just at the line (44; ≥40) — exercise nudges it up.',
+'TSH':'The brain\'s "turn up the thyroid" signal. Yours is normal.',
+'ALT (SGPT)':'A liver enzyme that rises when liver cells are stressed. Yours is normal.',
+'Vitamin D (25-OH)':'Vital for bones and immunity; below 30 is "insufficient". Yours improved 22 → 28 → 35 (now fine) — the supplement is working.',
+'Haemoglobin':'The protein in red cells that carries oxygen. Yours is healthy.'
+};
+
+const SYS=[
+['Metabolic & diabetes',[['HbA1c','5.7','%','4–5.6','high','up','a1c'],['Glucose – fasting','95','mg/dL','70–99','norm','up','a1c']]],
+['Lipids / cardiac risk',[['Total cholesterol','225','mg/dL','<200','high','up','lipid'],['Triglycerides','180','mg/dL','<150','high','up','lipid'],['LDL','140','mg/dL','<100','high','up','lipid'],['HDL','44','mg/dL','≥40','norm','flat','lipid']]],
+['Thyroid',[['TSH','2.4','µIU/mL','0.35–4.94','norm','up','tsh']]],
+['Liver',[['ALT (SGPT)','28','U/L','0–45','norm','down','alt']]],
+['Vitamins',[['Vitamin D (25-OH)','35','ng/mL','30–100','norm','up','vitd']]],
+['Hematology',[['Haemoglobin','14.5','g/dL','13–17','norm','up','hb']]]
+];
+
+const CHARTS=[
+{id:'lipid',sys:'Lipids',title:'Lipid profile',note:'TG, total & LDL above target and rising; HDL at the line. Dashed = targets.',unit:'mg/dL',ymin:0,ymax:260,targets:[['TG 150',150,'#c0392b'],['LDL 100',100,'#c1654b']],series:[{name:'Triglycerides',color:'#c0392b',data:SER.tg,ref:'<150'},{name:'Total',color:'#bf8f2e',data:SER.tc,ref:'<200'},{name:'LDL',color:'#c1654b',data:SER.ldl,ref:'<100'},{name:'HDL',color:'#5b8a72',data:SER.hdl,ref:'≥40'}]},
+{id:'a1c',sys:'Metabolic',title:'HbA1c (3-month sugar)',note:'Reached the pre-diabetic 5.7–6.4% band.',unit:'%',ymin:5,ymax:7,band:[4,5.6],targets:[['Diabetes ≥6.5',6.5,'#c0392b']],series:[{name:'HbA1c',color:'#c1654b',data:SER.a1c,ref:'4–5.6'}]},
+{id:'vitd',sys:'Vitamins',title:'Vitamin D',note:'Improved from insufficient (22) into the normal band.',unit:'ng/mL',ymin:0,ymax:60,band:[30,60],series:[{name:'Vitamin D',color:'#bf8f2e',data:SER.vitd,ref:'30–100'}]}
+];
+
+// ── What's Ahead — projections are DERIVED from the real ≥3-point trends above, never measured values ──
+const AHEAD_CHARTS=[
+{id:'a1c',title:'HbA1c — projected',note:'Rose steadily across 3 tests; the dotted line is where it heads if that simply continues.',unit:'%',ymin:5,ymax:7,band:[4,5.6],targets:[['Diabetes ≥6.5',6.5,'#c0392b']],series:[{name:'HbA1c',color:'#c1654b',data:SER.a1c,proj:5.9}]},
+{id:'lipid',title:'Lipids — projected',note:'TG, total & LDL all climbing; dotted = estimated next value. Dashed = targets.',unit:'mg/dL',ymin:0,ymax:260,targets:[['TG 150',150,'#c0392b'],['LDL 100',100,'#c1654b']],series:[{name:'Triglycerides',color:'#c0392b',data:SER.tg,proj:200},{name:'Total',color:'#bf8f2e',data:SER.tc,proj:240},{name:'LDL',color:'#c1654b',data:SER.ldl,proj:150}]}
+];
+const RISK=[
+['📈 HbA1c (blood sugar)','HbA1c rose <b>5.3 → 5.5 → 5.7%</b> (Aug 2023 → Aug 2024). If it keeps climbing at this pace it could reach about <b>5.9% by early 2025</b> — deeper into the pre-diabetic band. <i>An estimate — discuss with your doctor.</i>','c:a1c'],
+['🫀 Cholesterol & triglycerides','Triglycerides <b>145 → 160 → 180</b> and LDL <b>120 → 130 → 140</b> — both rising steadily. On this path TG passes ~200 and LDL ~150 within about a year if nothing changes.','c:lipid'],
+['🌿 Vitamin D (a good trend!)','Vitamin D climbed <b>22 → 28 → 35</b> and is now normal — a genuinely improving trajectory. Keep the routine up and recheck in a few months. 🎉','c:vitd']
+];
+const WATCH=[
+['moderate','Pre-diabetes / insulin-resistance picture','rising HbA1c <i>together with</i> high triglycerides is the kind of pattern that can point toward insulin resistance and pre-diabetes. Nothing is decided — this is for a doctor to check.',['Repeat HbA1c in a few months','Fasting insulin / HOMA-IR','Possibly an oral glucose tolerance test (OGTT)'],[['c:a1c','📈 HbA1c'],['tab:doctors','🩺 Doctors'],['tab:suggestions','🌿 Suggestions'],['tab:exercise','🏋️ Exercise']]],
+['moderate','Longer-term cholesterol / heart risk','total cholesterol, LDL and triglycerides all drifting up together is the kind of pattern doctors watch for future heart risk — worth acting on early while it is easy.',['Lipid recheck in ~3 months','Discuss ApoB / Lp(a) if your doctor advises','Home blood-pressure log'],[['c:lipid','📈 Lipids'],['tab:doctors','🩺 Doctors'],['tab:suggestions','🌿 Suggestions']]]
+];
+
+const CASC=[
+['strong','Early metabolic pattern',[['out','Rising LDL/total','c:lipid'],['out','High triglycerides','c:lipid'],['mech','more refined carbs/sugar'],['out','HbA1c 5.7 (pre-diabetic)','c:a1c']],
+ 'Your cholesterol and triglycerides are drifting up at the same time your blood sugar (HbA1c) reached the pre-diabetic band. Together that\'s an <b>early metabolic pattern</b> — and the same few habits improve all of these at once.'],
+['moderate','Vitamin D recovered',[['out','Vitamin D was 22 (low)','c:vitd'],['mech','supplement + sunlight'],['out','Now 35 (normal)','c:vitd']],
+ 'Your Vitamin D was below range and is now back to normal — a clear win. Keep the routine that got it there and recheck in a few months.']
+];
+const CDO=[
+['<b>Swap some white rice for millets</b> (ragi, jowar, korralu/foxtail) — slower sugar release helps HbA1c and triglycerides.','<b>Walk briskly ~30 min most days</b> — muscles pull sugar &amp; fat from the blood (see the Exercise tab).','<b>Cut sugary drinks &amp; fried snacks</b> — these raise triglycerides fastest.','<b>Ask your doctor</b> to recheck lipids &amp; HbA1c in ~3 months. Caught early, this is usually reversible.'],
+['<b>Keep what\'s working</b> — your prescribed Vitamin-D routine and some daily sunlight.','<b>Recheck in a few months</b> to confirm it stays in range.']
+];
+const HIDDEN=[['HbA1c just crossed into 5.7%','Each value alone looks "almost fine", but crossing 5.7% is the pre-diabetes threshold — the trend matters as much as the number.'],['LDL rising trend','120 → 130 → 140 — small steps, but the steady direction (up) is the signal to act on now while it\'s easy.']];
+
+const EX=[
+['walk','🚶 Aerobic (cardio)','What it is: brisk walking, cycling or swimming — build toward ~150 min/week.','Why it helps YOU: working muscles pull triglycerides and sugar out of your blood and make insulin work better — directly targeting your rising lipids and HbA1c.'],
+['strength','🏋️ Strength','What it is: 2 short sessions/week (bodyweight squats, wall push-ups, bands).','Why it helps YOU: more muscle soaks up blood sugar, easing the early metabolic pattern.'],
+['stretch','🧘 Flexibility','What it is: gentle stretching/yoga most days, even 5–10 min.','Why it helps YOU: keeps you comfortable so you keep going, and lowers stress.'],
+['progress','📈 Progress gently','What it is: start easy, add ~10% a week.','Why it helps YOU: steady months change the numbers; let breathing (not pain) guide you. Not medical clearance — check with your doctor.']
+];
+const EXWHY=['Aerobic activity lowers triglycerides and helps blood sugar.','Strength work builds muscle that soaks up sugar.','Activity + small weight loss eases the whole metabolic pattern.'];
+const WEEK=[['Mon','Walk 30m'],['Tue','Strength'],['Wed','Walk 30m'],['Thu','Rest'],['Fri','Strength'],['Sat','Long walk'],['Sun','Stretch']];
+const SUGG=[
+['🍽️ Food','<b>Less refined carb &amp; sugar</b> helps triglycerides and HbA1c together; see the "can enjoy vs. rarely" lists below. <i>Why:</i> sugar &amp; refined carbs become triglycerides.','tab:doctors'],
+['🚶 Movement','See the Exercise tab — daily activity improves lipids, blood sugar and weight at once.','tab:exercise'],
+['💧 Hydration','Plenty of water supports overall metabolism.',null],
+['😴 Sleep','Good sleep helps insulin work and curbs appetite.',null],
+['📅 Keep testing','Re-testing is what makes trends visible — recheck lipids &amp; HbA1c.','c:a1c']
+];
+// Three paired lists — "can enjoy" vs "best to have rarely" — tied to the findings, named in Rayalaseema cuisine. [title, okLabel, limLabel, okItems[name,why], limItems[name,why,swap]]
+const FOODGROUPS=[
+['🥗 Foods','✅ Can enjoy freely','🟡 Best to have rarely / smaller portions',
+  [['Vegetables & greens (gongura, palakura, beans)','fibre fills you up and barely moves blood sugar or triglycerides'],['Millets — ragi, jowar, korralu','slow-release carbs, gentler on HbA1c than white rice'],['Dal, sambar, sprouts, pulses','protein + fibre steady both sugar and lipids'],['Egg, fish, chicken or paneer — grilled/steamed (whatever you eat)','lean protein without the frying oil that lifts triglycerides']],
+  [['Large white-rice servings','spikes blood sugar (HbA1c)','smaller portion + mix in millets'],['Fried snacks (mirchi bajji, punugulu, bonda)','frying oil raises triglycerides fastest','steamed idli, plain dosa, roasted peanuts'],['Sweets (boorelu, laddu, sugary chai)','straight sugar → HbA1c & triglycerides','fruit, or a little jaggery in a smaller portion'],['Heavy coconut/oil curries','saturated fat nudges LDL up','dal, sambar, more vegetables']]],
+['🍎 Fruits','✅ Can enjoy','🟡 Enjoy in small portions',
+  [['Guava (jama)','high fibre, lower sugar — good with a pre-diabetic HbA1c'],['Papaya, apple, citrus (orange, mosambi)','steady, gentle sugar release'],['Pomegranate, berries (in season)','antioxidants with only modest sugar']],
+  [['Mango, banana, chikoo, grapes','naturally high sugar — fine in small portions, not bowls','one small piece; whole fruit, never juice'],['Dried fruit & packaged fruit juice','concentrated sugar, spikes HbA1c','whole fresh fruit instead']]],
+['🥤 Drinks','✅ Can enjoy','🟡 Best to have rarely',
+  [['Water','best for metabolism, zero sugar'],['Unsweetened tea / coffee','no added sugar'],['Buttermilk (majjiga)','light, aids digestion, no added sugar']],
+  [['Sugary drinks, sodas, sweetened juices','liquid sugar lifts HbA1c & triglycerides fast','water, majjiga, or unsweetened tea'],['Alcohol','raises triglycerides and stresses the liver','discuss safe limits with your doctor']]]
+];
+
+const DOCS=[
+['🩸 Physician / Diabetologist','Rising lipids + pre-diabetic HbA1c (one metabolic picture).',['Is this lifestyle for now, or do I need further tests?','What lipid &amp; HbA1c targets fit me?'],['Agree a diet + activity plan.','Recheck lipids &amp; HbA1c in 3 months.'],'c:a1c'],
+['🥗 Dietitian (optional)','Help tailoring South-Indian meals to the numbers.',['How do I keep my usual food but lower the carb load?'],['Build a millet-friendly weekly plan.'],'c:lipid']
+];
+// Body coverage + suggested tests. status: ok/part/no (from real data only). go links checked tiles to findings.
+// Tests: data-driven (tied to findings) rank Important; general screening fills Optional. Age/sex-specific gated by PROFILE.
+const PROFILE={ageKnown:true,sexKnown:true,age:34,sex:'male'};
+const COVERAGE=[
+{sys:'Blood sugar / metabolic',icon:'🩸',status:'ok',go:'c:a1c',
+ important:[['Fasting insulin / HOMA-IR','quantifies the insulin resistance behind a rising HbA1c'],['Repeat HbA1c in 3–6 months','confirms whether the upward trend continues']],
+ optional:[['Oral glucose tolerance test (OGTT)','a fuller picture of how your body handles sugar — only if your doctor wants it']]},
+{sys:'Cholesterol / heart-risk bloods',icon:'🫀',status:'ok',go:'c:lipid',
+ important:[['Lipid recheck in ~3 months','shows whether diet & activity are bringing the numbers down']],
+ optional:[['ApoB / Lp(a)','finer detail on heart risk — discuss if your doctor thinks it useful']]},
+{sys:'Thyroid',icon:'🦋',status:'ok',go:'m:TSH',
+ important:[],
+ optional:[['Anti-TPO antibodies','checks for autoimmune thyroid — only if your doctor suspects it (your TSH is normal)']]},
+{sys:'Liver',icon:'🟤',status:'ok',go:'m:ALT (SGPT)',
+ important:[],
+ optional:[['Liver ultrasound / FibroScan','looks at liver fat/stiffness — discuss only if risk factors appear (your ALT is normal)']]},
+{sys:'Blood count (hematology)',icon:'🩸',status:'ok',go:'m:Haemoglobin',
+ important:[],
+ optional:[['Repeat CBC at next checkup','routine — your haemoglobin is normal']]},
+{sys:'Vitamins / inflammation',icon:'🌿',status:'ok',go:'c:vitd',
+ important:[],
+ optional:[['Vitamin B12','commonly checked alongside vitamin D'],['hs-CRP','a general inflammation marker — discuss']]},
+{sys:'Heart (ECG / Echo / BP)',icon:'❤️',status:'part',go:'c:lipid',
+ important:[['Blood-pressure check','central to heart risk and never recorded in your reports']],
+ optional:[['Resting ECG','a baseline of your heart rhythm']]},
+{sys:'Kidney',icon:'🫘',status:'no',
+ important:[['Serum creatinine + eGFR','basic kidney function — it was not in your panel']],
+ optional:[['Urine routine / ACR','checks for protein leaking into the urine']]},
+{sys:'Eyes',icon:'👁️',status:'no',
+ important:[['Vision + retina (fundus) eye exam','general screening — and rising blood sugar can affect the eyes']],
+ optional:[]},
+{sys:'Bones / joints',icon:'🦴',status:'no',
+ important:[],
+ optional:[['Bone-density (DEXA) scan','usually considered later in life — a note for the future; your vitamin D is already tracked']]},
+{sys:'Abdominal organs (imaging)',icon:'🩻',status:'no',
+ important:[],
+ optional:[['Abdominal ultrasound','a general look at liver/gallbladder/kidneys — only if symptoms or your doctor advises']]}
+];
+const STATUS={ok:['ok','✅ checked'],part:['part','🟡 partly'],no:['no','⭕ not assessed']};
+const SCREEN_NOTE=PROFILE.ageKnown&&PROFILE.sexKnown
+ ?'<h3 style="font-size:15px">🗓️ General screening for your age &amp; sex <span style="font-weight:400;color:var(--muted);font-size:12px">— on file: '+PROFILE.age+', '+esc(PROFILE.sex)+'</span></h3><p class="note">Because your age and sex are on file, here is the general picture — <b>confirm with your doctor</b>: around 34, the focus is usually blood pressure, blood sugar, cholesterol and weight (above). <b>Colorectal screening</b> typically begins about age 45, and <b>prostate (PSA)</b> discussion around 50 — notes for later. Female-specific screenings (Pap smear, mammogram) do not apply to you. <i>These are general suggestions, not a personalised plan.</i></p>'
+ :'<h3 style="font-size:15px">🗓️ General screening</h3><p class="note">Some screenings depend on age and sex. Your age/sex are not on file, so <b>ask your doctor which screenings apply to you</b> — we never assume them.</p>';
+const CHECK=[['Fasting insulin / HOMA-IR','Quantify the suspected insulin resistance.'],['Recheck lipids in 3 months','Track whether lifestyle is working.'],['Repeat HbA1c','Confirm it isn\'t creeping further.'],['Start a home BP log','Vitals were missing.']];
+const RESOLVED=[['Identity','Rahul (fictional) — confirmed by user.'],['Location & diet','Anantapur, India; South-Indian (Rayalaseema) food — confirmed by user.']];
+const UNCLEAR=[['(none)','Nothing was left unverified in this example.']];
+
+const PILL={high:['s-high','▲ HIGH'],low:['s-low','▼ LOW'],norm:['s-norm','● NORMAL'],watch:['s-watch','● WATCH']};
+const DOT={high:'d-high',low:'d-low',norm:'d-norm',watch:'d-watch'};
+const ARR={up:['a-up','▲'],down:['a-down','▼'],flat:['a-flat','→'],fluct:['a-fluct','↕'],na:['a-flat','·']};
+const CHART_LABEL={lipid:'📈 Lipids',a1c:'📈 HbA1c',vitd:'📈 Vitamin D'};
+
+function goMarker(name){numStatus='all';numSearch='';if($('numSearch'))$('numSearch').value='';document.querySelectorAll('#tab-numbers .chip[data-status]').forEach(x=>x.classList.toggle('on',x.dataset.status==='all'));showTab('numbers');renderNumbers();setTimeout(()=>{const b=[...document.querySelectorAll('#numbers .mname')].find(x=>x.textContent.trim()===name);if(b){const tr=b.closest('tr');tr.scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'center'});tr.classList.remove('flash');void tr.offsetWidth;tr.classList.add('flash');}},110);}
+function jumpToChart(ch){trendSys='All';showTab('trends');setTimeout(()=>{const el=document.querySelector('.chartcard[data-cid="'+ch+'"]');if(el){el.scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}},90);}
+function goStr(s){if(!s)return;const i=s.indexOf(':'),k=s.slice(0,i),v=s.slice(i+1);if(k==='c')jumpToChart(v);else if(k==='m')goMarker(v);else if(k==='tab')showTab(v);}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(!g)return;e.preventDefault();e.stopPropagation();goStr(g.dataset.go);});
+document.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const t=e.target;if(!t||!t.dataset||!t.dataset.go)return;if(t.tagName==='BUTTON')return;e.preventDefault();goStr(t.dataset.go);});
+function relRow(items){return '<div class="relchips"><span class="rl">Related:</span>'+items.map(([g,l])=>'<button class="golink" data-go="'+esc(g)+'">'+esc(l)+'</button>').join('')+'</div>';}
+const REL={overview:[['tab:trends','📈 Trends'],['tab:ahead','🔮 What\'s Ahead'],['tab:numbers','🔢 My Numbers'],['tab:map','🧭 Full Map'],['tab:doctors','🩺 Doctors']],trends:[['tab:ahead','🔮 What\'s Ahead'],['tab:numbers','🔢 My Numbers'],['tab:map','🧭 Full Map'],['tab:exercise','🏋️ Exercise']],ahead:[['tab:trends','📈 Trends'],['tab:numbers','🔢 My Numbers'],['tab:doctors','🩺 Doctors'],['tab:suggestions','🌿 Suggestions'],['tab:exercise','🏋️ Exercise']],numbers:[['tab:trends','📈 Trends'],['tab:map','🧭 Full Map']],map:[['tab:trends','📈 Trends'],['tab:exercise','🏋️ Exercise'],['tab:suggestions','🌿 Suggestions'],['tab:doctors','🩺 Doctors']],exercise:[['tab:suggestions','🌿 Suggestions'],['c:lipid','📈 Lipids'],['c:a1c','📈 HbA1c']],suggestions:[['tab:exercise','🏋️ Exercise'],['tab:trends','📈 Trends']],doctors:[['tab:trends','📈 Trends'],['tab:ahead','🔮 What\'s Ahead'],['tab:numbers','🔢 My Numbers']],unclear:[['tab:numbers','🔢 My Numbers'],['tab:trends','📈 Trends']]};
+function injectRel(){Object.keys(REL).forEach(id=>{const sec=document.querySelector('#tab-'+id+' .block');if(!sec||sec.querySelector(':scope > .relrow'))return;const d=document.createElement('div');d.className='relrow';d.innerHTML='<span class="rl">Related tabs:</span>'+REL[id].map(([g,l])=>'<button class="golink" data-go="'+esc(g)+'">'+esc(l)+'</button>').join('');sec.appendChild(d);});}
+
+const W=540,H=280,M={l:46,r:16,t:14,b:30},PW=W-M.l-M.r,PH=H-M.t-M.b;
+function xAt(i,n){return M.l+(n<=1?PW/2:i/(n-1)*PW);}function yAt(v,mn,mx){return M.t+(1-(v-mn)/(mx-mn))*PH;}
+function refTxt(ref,i){if(!ref)return '';const r=Array.isArray(ref)?ref[i]:ref;return r?' · ref '+r:'';}
+function drawChart(def,hidden){const n=LBL.length,mn=def.ymin,mx=def.ymax;let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(def.title)+'">';
+  if(def.band){const y1=yAt(def.band[1],mn,mx),y0=yAt(def.band[0],mn,mx);s+='<rect x="'+M.l+'" y="'+y1.toFixed(1)+'" width="'+PW+'" height="'+(y0-y1).toFixed(1)+'" fill="rgba(91,138,114,.13)"/>';}
+  for(let t=0;t<=5;t++){const v=mn+(mx-mn)*t/5,y=yAt(v,mn,mx);s+='<line x1="'+M.l+'" y1="'+y.toFixed(1)+'" x2="'+(W-M.r)+'" y2="'+y.toFixed(1)+'" stroke="rgba(0,0,0,.06)"/><text x="'+(M.l-6)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end" font-size="10" fill="#76746c">'+(Math.round(v*10)/10)+'</text>';}
+  LBL.forEach((l,i)=>{s+='<text x="'+xAt(i,n)+'" y="'+(H-10)+'" text-anchor="middle" font-size="10" fill="#76746c">'+l+'</text>';});
+  (def.targets||[]).forEach(t=>{const y=yAt(t[1],mn,mx);s+='<line x1="'+M.l+'" y1="'+y.toFixed(1)+'" x2="'+(W-M.r)+'" y2="'+y.toFixed(1)+'" stroke="'+t[2]+'" stroke-width="1.1" stroke-dasharray="5 5"/><text x="'+(W-M.r)+'" y="'+(y-3).toFixed(1)+'" text-anchor="end" font-size="9" fill="'+t[2]+'">'+esc(t[0])+'</text>';});
+  def.series.forEach(se=>{if(hidden.has(se.name))return;const pts=se.data.map((v,i)=>xAt(i,n).toFixed(1)+','+yAt(v,mn,mx).toFixed(1)).join(' ');s+='<polyline fill="none" stroke="'+se.color+'" stroke-width="2.4" points="'+pts+'"/>';se.data.forEach((v,i)=>{s+='<circle cx="'+xAt(i,n).toFixed(1)+'" cy="'+yAt(v,mn,mx).toFixed(1)+'" r="4" fill="'+se.color+'" stroke="#fff" stroke-width="1.5" tabindex="0" data-tip="'+esc(se.name)+': '+v+' '+esc(def.unit)+' ('+LBL[i]+')'+esc(refTxt(se.ref,i))+'"/>';});});
+  return s+'</svg>';}
+function chartTable(def){let h='<table class="visually-hidden"><caption>'+esc(def.title)+'</caption><tr><th>Date</th>';def.series.forEach(s=>h+='<th>'+esc(s.name)+'</th>');h+='</tr>';LBL.forEach((l,i)=>{h+='<tr><th>'+l+'</th>';def.series.forEach(s=>h+='<td>'+s.data[i]+'</td>');h+='</tr>';});return h+'</table>';}
+function legend(c){if(c.series.length<2)return '';return '<div class="lg">'+c.series.map(se=>'<button class="lgi '+(HIDDEN_SERIES.has(se.name)?'off':'')+'" data-s="'+esc(se.name)+'"><span class="sw" style="background:'+se.color+'"></span>'+esc(se.name)+'</button>').join('')+'</div>';}
+let HIDDEN_SERIES=new Set(),showBand=true,trendSys='All';
+function renderCharts(){const sysset=[...new Set(CHARTS.map(c=>c.sys))];
+  $('trendFilters').innerHTML='<button class="chip '+(trendSys==='All'?'on':'')+'" data-ts="All">All</button>'+sysset.map(x=>'<button class="chip '+(trendSys===x?'on':'')+'" data-ts="'+x+'">'+x+'</button>').join('');
+  $('trendFilters').querySelectorAll('[data-ts]').forEach(b=>b.onclick=()=>{trendSys=b.dataset.ts;renderCharts();});
+  let html='';CHARTS.filter(c=>trendSys==='All'||c.sys===trendSys).forEach(c=>{const def=Object.assign({},c);if(!showBand)def.band=null;const st=c.id==='vitd'?['s-norm','● NORMAL']:['s-high','▲ HIGH'];
+    html+='<div class="chartcard" data-cid="'+c.id+'"><div class="ch-h"><div><h3>'+esc(c.title)+'</h3><p>'+esc(c.note)+'</p></div><span class="pilltag '+st[0]+'">'+st[1]+'</span></div><div class="chart">'+drawChart(def,HIDDEN_SERIES)+'</div>'+chartTable(c)+legend(c)+'</div>';});
+  $('charts').innerHTML=html;$('charts').querySelectorAll('.lgi').forEach(b=>b.onclick=()=>{const nm=b.dataset.s;HIDDEN_SERIES.has(nm)?HIDDEN_SERIES.delete(nm):HIDDEN_SERIES.add(nm);renderCharts();});bindTips($('charts'));}
+const tip=$('ctip');
+function bindTips(root){root.querySelectorAll('[data-tip]').forEach(el=>{const show=e=>{tip.textContent=el.getAttribute('data-tip');tip.style.opacity='1';move(e);};const move=e=>{const t=(e.touches?e.touches[0]:e);tip.style.left=Math.min(innerWidth-tip.offsetWidth-8,(t.clientX||0)+12)+'px';tip.style.top=((t.clientY||0)+12)+'px';};el.addEventListener('mouseenter',show);el.addEventListener('mousemove',move);el.addEventListener('mouseleave',()=>tip.style.opacity='0');el.addEventListener('focus',show);el.addEventListener('blur',()=>tip.style.opacity='0');el.addEventListener('click',show);});}
+
+function renderGlance(){const mk=r=>r.map(x=>'<li'+(x[4]?' class="link" tabindex="0" role="button" data-go="'+esc(x[4])+'"':'')+'><span class="dot '+DOT[x[2]]+'"></span><span class="name">'+x[0]+'<div class="src">'+x[3]+'</div></span><span class="v">'+x[1]+'</span></li>').join('');$('glanceA').innerHTML=mk(GLANCE_A);$('glanceB').innerHTML=mk(GLANCE_B);}
+let numStatus='all',numSearch='';
+function renderNumbers(){let html='';SYS.forEach(([name,rows])=>{const fr=rows.filter(r=>{if(numSearch&&!r[0].toLowerCase().includes(numSearch))return false;if(numStatus==='all')return true;if(numStatus==='out')return r[4]==='high'||r[4]==='low';return r[4]===numStatus;});if(!fr.length)return;
+    html+='<div class="syshead">'+name+'</div><table class="tbl"><colgroup><col style="width:32%"><col style="width:11%"><col style="width:11%"><col style="width:18%"><col style="width:16%"><col style="width:12%"></colgroup><tr><th>Marker</th><th style="text-align:right">Latest</th><th>Unit</th><th>Reference</th><th>Status</th><th>Trend</th></tr>';
+    fr.forEach(r=>{const [p,pl]=PILL[r[4]],[ac,ag]=ARR[r[5]],ex=EXPL[r[0]],ch=r[6];html+='<tr><td><button class="info" data-ex="'+esc(ex||'')+'">i</button><button class="mname'+(ch?' link':'')+'"'+(ch?' data-go="c:'+ch+'"':'')+'>'+esc(r[0])+'</button></td><td class="num">'+esc(r[1])+'</td><td>'+esc(r[2])+'</td><td>'+esc(r[3])+'</td><td><span class="pilltag '+p+'">'+pl+'</span></td><td><span class="arrow '+ac+'">'+ag+'</span></td></tr>';});html+='</table>';});
+  if(!html)html='<p class="lead">No markers match this filter.</p>';$('numbers').innerHTML=html;
+  $('numbers').querySelectorAll('.info').forEach(b=>b.onclick=()=>{const tr=b.closest('tr'),nx=tr.nextElementSibling;if(nx&&nx.classList.contains('expl')){nx.remove();return;}const e=document.createElement('tr');e.className='expl';e.innerHTML='<td colspan="6">'+(b.dataset.ex||'No explanation.')+'</td>';tr.after(e);});}
+function renderMap(){$('cascades').innerHTML=CASC.map(([conf,title,nodes,nar],idx)=>{const cc={strong:'c-strong',moderate:'c-mod',speculative:'c-spec'}[conf];const chain=nodes.map((nd,i)=>(i?'<span class="sep">→</span>':'')+'<span class="node '+nd[0]+(nd[2]?' link" tabindex="0" role="button" data-go="'+esc(nd[2])+'"':'"')+'>'+esc(nd[1])+'</span>').join('');const dolist=(CDO[idx]||[]).map(b=>'<li>'+b+'</li>').join('');const charts=[...new Set(nodes.filter(nd=>nd[2]&&nd[2].slice(0,2)==='c:').map(nd=>nd[2]))];const rel=charts.map(t=>[t,CHART_LABEL[t.slice(2)]||'📈 chart']).concat([['tab:exercise','🏋️ Exercise'],['tab:suggestions','🌿 Suggestions']]);
+    return '<div class="cascade"><span class="conf '+cc+'">'+conf+'</span><b>'+esc(title)+'</b><div class="chain">'+chain+'</div><p class="cnar"><b>What’s happening to you:</b> '+nar+'</p>'+(dolist?'<div class="cdo"><b>✅ What you can do about it:</b><ul class="dolist">'+dolist+'</ul></div>':'')+relRow(rel)+'</div>';}).join('');
+  $('hidden').innerHTML=HIDDEN.map(h=>'<div class="card"><h3 style="font-size:15px">'+esc(h[0])+'</h3><p class="note">'+esc(h[1])+'</p></div>').join('');}
+function pBar(label,cur,pct,cls){return '<div class="prog"><div class="top"><span>'+label+'</span><span><b>'+cur+'</b></span></div><div class="bar"><span class="'+cls+'" data-w="'+pct+'"></span></div></div>';}
+function renderProgress(){$('prog-lipid').innerHTML=pBar('Triglycerides → <150','180',Math.min(100,150/180*100),'fill-bad')+pBar('LDL → <100','140',Math.min(100,100/140*100),'fill-warn')+pBar('Total → <200','225',Math.min(100,200/225*100),'fill-warn');
+  $('prog-meta').innerHTML=pBar('HbA1c → <5.7%','5.7%',Math.min(100,5.7/5.7*100),'fill-warn')+pBar('Vitamin D → ≥30','35 ✓',100,'fill-good');
+  requestAnimationFrame(()=>document.querySelectorAll('#progressWrap .bar>span').forEach(s=>s.style.width=s.dataset.w+'%'));}
+function drawProj(def){const NM=LBL.length,NT=NM+1,mn=def.ymin,mx=def.ymax,xP=i=>M.l+i/(NT-1)*PW;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(def.title)+', measured line with a dotted estimate of the next value">';
+  if(def.band){const y1=yAt(def.band[1],mn,mx),y0=yAt(def.band[0],mn,mx);s+='<rect x="'+M.l+'" y="'+y1.toFixed(1)+'" width="'+PW+'" height="'+(y0-y1).toFixed(1)+'" fill="rgba(91,138,114,.13)"/>';}
+  for(let t=0;t<=5;t++){const v=mn+(mx-mn)*t/5,y=yAt(v,mn,mx);s+='<line x1="'+M.l+'" y1="'+y.toFixed(1)+'" x2="'+(W-M.r)+'" y2="'+y.toFixed(1)+'" stroke="rgba(0,0,0,.06)"/><text x="'+(M.l-6)+'" y="'+(y+3).toFixed(1)+'" text-anchor="end" font-size="10" fill="#76746c">'+(Math.round(v*10)/10)+'</text>';}
+  for(let i=0;i<NT;i++){const lab=i<NM?LBL[i]:PROJ_LBL;s+='<text x="'+xP(i).toFixed(1)+'" y="'+(H-10)+'" text-anchor="middle" font-size="9.5" fill="'+(i<NM?'#76746c':'#7d5a7d')+'">'+esc(lab)+'</text>';}
+  (def.targets||[]).forEach(t=>{const y=yAt(t[1],mn,mx);s+='<line x1="'+M.l+'" y1="'+y.toFixed(1)+'" x2="'+(W-M.r)+'" y2="'+y.toFixed(1)+'" stroke="'+t[2]+'" stroke-width="1.1" stroke-dasharray="5 5"/><text x="'+(W-M.r)+'" y="'+(y-3).toFixed(1)+'" text-anchor="end" font-size="9" fill="'+t[2]+'">'+esc(t[0])+'</text>';});
+  const xd=xP(NM-1);s+='<line x1="'+xd.toFixed(1)+'" y1="'+M.t+'" x2="'+xd.toFixed(1)+'" y2="'+(M.t+PH)+'" stroke="#c8b3d3" stroke-width="1" stroke-dasharray="2 4"/>';
+  def.series.forEach(se=>{const meas=se.data.map((v,i)=>xP(i).toFixed(1)+','+yAt(v,mn,mx).toFixed(1)).join(' ');
+    s+='<polyline fill="none" stroke="'+se.color+'" stroke-width="2.4" points="'+meas+'"/>';
+    const lx=xP(NM-1),ly=yAt(se.data[NM-1],mn,mx),px=xP(NM),py=yAt(se.proj,mn,mx);
+    s+='<polyline class="est" fill="none" stroke="'+se.color+'" stroke-width="2.4" points="'+lx.toFixed(1)+','+ly.toFixed(1)+' '+px.toFixed(1)+','+py.toFixed(1)+'"/>';
+    se.data.forEach((v,i)=>{s+='<circle cx="'+xP(i).toFixed(1)+'" cy="'+yAt(v,mn,mx).toFixed(1)+'" r="4" fill="'+se.color+'" stroke="#fff" stroke-width="1.5" tabindex="0" data-tip="'+esc(se.name)+': '+v+' '+esc(def.unit)+' ('+LBL[i]+')"/>';});
+    s+='<rect x="'+(px-4).toFixed(1)+'" y="'+(py-4).toFixed(1)+'" width="8" height="8" transform="rotate(45 '+px.toFixed(1)+' '+py.toFixed(1)+')" fill="#fffdf8" stroke="'+se.color+'" stroke-width="1.8" tabindex="0" data-tip="'+esc(se.name)+': ~'+se.proj+' '+esc(def.unit)+' — ESTIMATE for '+esc(PROJ_LBL)+', may be wrong"/>';});
+  return s+'</svg>';}
+function projTable(def){let h='<table class="visually-hidden"><caption>'+esc(def.title)+' — measured values then a projected estimate</caption><tr><th>Date</th>';def.series.forEach(s=>h+='<th>'+esc(s.name)+'</th>');h+='</tr>';LBL.forEach((l,i)=>{h+='<tr><th>'+l+'</th>';def.series.forEach(s=>h+='<td>'+s.data[i]+'</td>');h+='</tr>';});h+='<tr><th>'+esc(PROJ_LBL)+'</th>';def.series.forEach(s=>h+='<td>~'+s.proj+' (estimate)</td>');return h+'</tr></table>';}
+function renderAhead(){
+  $('aheadCharts').innerHTML=AHEAD_CHARTS.map(c=>'<div class="chartcard" data-cid="ahead-'+c.id+'"><div class="ch-h"><div><h3>'+esc(c.title)+'<span class="estbadge">estimate · may be wrong</span></h3><p>'+esc(c.note)+'</p></div></div><div class="chart">'+drawProj(c)+'</div>'+projTable(c)+'</div>').join('');
+  bindTips($('aheadCharts'));
+  $('riskTraj').innerHTML=RISK.map(r=>'<div class="card"><h3 style="font-size:15px">'+r[0]+'</h3><p class="note">'+r[1]+(r[2]?' <button class="golink" data-go="'+esc(r[2])+'">see chart ↗</button>':'')+'</p></div>').join('');
+  $('watch').innerHTML=WATCH.map(w=>{const cc={strong:'c-strong',moderate:'c-mod',speculative:'c-spec'}[w[0]];const tests=w[3].map(t=>'<li>'+esc(t)+'</li>').join('');
+    return '<div class="cascade"><span class="conf '+cc+'">'+w[0]+'</span><b>'+esc(w[1])+'</b><p class="cnar"><b>What this points toward:</b> '+w[2]+'</p><div class="cdo"><b>🔬 Tests a doctor uses to check it:</b><ul class="dolist">'+tests+'</ul></div>'+relRow(w[4])+'</div>';}).join('');}
+function renderChecklist(){$('checklist').innerHTML=CHECK.map(c=>'<label class="check"><input type="checkbox"><div><div class="ct">'+esc(c[0])+'</div><div class="cd">'+esc(c[1])+'</div></div></label>').join('');$('ck-total').textContent=CHECK.length;$('checklist').querySelectorAll('input').forEach(i=>i.onchange=updCheck);updCheck();}
+function updCheck(){const ins=[...$('checklist').querySelectorAll('input')],d=ins.filter(i=>i.checked).length,p=Math.round(d/ins.length*100);ins.forEach(i=>i.closest('.check').classList.toggle('done',i.checked));$('ck-count').textContent=d;$('ck-pct').textContent=p+'%';$('ck-bar').style.width=p+'%';}
+function renderSugg(){$('suggestions').innerHTML=SUGG.map(s=>'<div class="card"><h3>'+s[0]+'</h3><p class="note">'+s[1]+(s[2]?' <button class="golink" data-go="'+esc(s[2])+'">see it ↗</button>':'')+'</p></div>').join('');
+  $('food').innerHTML=FOODGROUPS.map(g=>{const ok=g[3].map(x=>'<li><b>'+esc(x[0])+'</b><span class="why">'+esc(x[1])+'</span></li>').join('');
+    const lim=g[4].map(x=>'<li><b>'+esc(x[0])+'</b><span class="why">'+esc(x[1])+'</span><span class="swap">↦ swap: <b>'+esc(x[2])+'</b></span></li>').join('');
+    return '<div class="foodgroup"><h3>'+g[0]+'</h3><div class="foodcols"><div class="foodcol ok"><h4>'+esc(g[1])+'</h4><ul>'+ok+'</ul></div><div class="foodcol lim"><h4>'+esc(g[2])+'</h4><ul>'+lim+'</ul></div></div></div>';}).join('');}
+function exFig(kind){const c='#5b8a72';if(kind==='walk')return '<svg class="exfig" viewBox="0 0 200 120"><circle cx="100" cy="28" r="12" fill="'+c+'"/><line x1="100" y1="40" x2="100" y2="72" stroke="'+c+'" stroke-width="6"/><line x1="100" y1="50" x2="118" y2="64" stroke="'+c+'" stroke-width="6"/><line x1="100" y1="50" x2="84" y2="62" stroke="'+c+'" stroke-width="6"/><line x1="100" y1="72" x2="116" y2="98" stroke="'+c+'" stroke-width="6"/><line x1="100" y1="72" x2="84" y2="98" stroke="'+c+'" stroke-width="6"/></svg>';
+  if(kind==='strength')return '<svg class="exfig" viewBox="0 0 200 120"><circle cx="100" cy="30" r="12" fill="'+c+'"/><line x1="100" y1="42" x2="100" y2="74" stroke="'+c+'" stroke-width="6"/><line x1="70" y1="54" x2="130" y2="54" stroke="'+c+'" stroke-width="6"/><circle cx="64" cy="54" r="9" fill="'+c+'"/><circle cx="136" cy="54" r="9" fill="'+c+'"/><line x1="100" y1="74" x2="116" y2="100" stroke="'+c+'" stroke-width="6"/><line x1="100" y1="74" x2="84" y2="100" stroke="'+c+'" stroke-width="6"/></svg>';
+  if(kind==='stretch')return '<svg class="exfig" viewBox="0 0 200 120"><circle cx="86" cy="30" r="12" fill="'+c+'"/><path d="M86 42 Q86 70 120 74" fill="none" stroke="'+c+'" stroke-width="6"/><line x1="86" y1="50" x2="120" y2="60" stroke="'+c+'" stroke-width="6"/><line x1="120" y1="74" x2="150" y2="74" stroke="'+c+'" stroke-width="6"/></svg>';
+  return '<svg class="exfig" viewBox="0 0 200 120"><path d="M30 86 Q100 22 170 86" fill="none" stroke="'+c+'" stroke-width="6"/><circle cx="100" cy="52" r="10" fill="'+c+'"/></svg>';}
+function renderExercise(){$('exgrid').innerHTML=EX.map(e=>'<div class="card">'+exFig(e[0])+'<h3>'+e[1]+'</h3><p class="note">'+esc(e[2])+'</p><div class="exwhy2">'+esc(e[3])+'</div></div>').join('');$('week').innerHTML=WEEK.map(d=>'<div class="day"><b>'+d[0]+'</b>'+d[1]+'</div>').join('');$('exwhy').innerHTML=EXWHY.map(w=>'<li>'+esc(w)+'</li>').join('');}
+function renderDoctors(){$('doctors').innerHTML=DOCS.map(d=>'<div class="doc"><h3>'+d[0]+(d[4]?' <button class="golink" data-go="'+esc(d[4])+'">See the data ↗</button>':'')+'</h3><p class="note">'+esc(d[1])+'</p><div class="two"><div><h4>What to ask</h4><ul>'+d[2].map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div><div><h4>What to do</h4><ul>'+d[3].map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></div></div>').join('');}
+function renderCoverage(){
+  $('coverage').innerHTML=COVERAGE.map(c=>{const s=STATUS[c.status],tag=c.go?'button':'div',go=c.go?' data-go="'+esc(c.go)+'"':'';
+    return '<'+tag+' class="covtile '+s[0]+'"'+go+(c.go?' aria-label="'+esc(c.sys+' — '+s[1])+', view results"':'')+'><span class="st">'+s[1]+'</span><span class="sn">'+esc(c.sys)+'</span></'+tag+'>';}).join('');
+  const block=(items,cls,lab)=>items.length?'<div class="tcol"><span class="lab '+cls+'">'+lab+'</span><ul class="tlist">'+items.map(t=>'<li><b>'+esc(t[0])+'</b><span class="why">'+esc(t[1])+'</span></li>').join('')+'</ul></div>':'';
+  $('tests').innerHTML='<div class="testgrid">'+COVERAGE.filter(c=>c.important.length||c.optional.length).map(c=>{const s=STATUS[c.status];
+    return '<div class="testcard"><div class="th"><h3>'+esc((c.icon||'')+' '+c.sys)+'</h3><span class="stp '+s[0]+'">'+esc(s[1])+'</span></div>'+block(c.important,'lab-imp','❗ Important')+block(c.optional,'lab-opt','➖ Optional')+'</div>';}).join('')+'</div>';
+  $('screennote').innerHTML=SCREEN_NOTE;}
+function renderUnclear(){$('resolved').innerHTML=RESOLVED.map(r=>'<li><b>'+esc(r[0])+':</b> '+esc(r[1])+'</li>').join('');$('unclear').innerHTML=UNCLEAR.map(u=>'<div class="card"><h3 style="font-size:15px">'+esc(u[0])+'</h3><p class="note">'+esc(u[1])+'</p></div>').join('');}
+
+const INIT={overview:renderGlance,trends:()=>{renderCharts();renderProgress();},ahead:renderAhead,numbers:renderNumbers,map:renderMap,exercise:renderExercise,suggestions:renderSugg,doctors:()=>{renderDoctors();renderCoverage();renderChecklist();},unclear:renderUnclear};
+const did={};function initTab(id){if(did[id])return;(INIT[id]||function(){})();did[id]=true;}
+function showTab(id){document.querySelectorAll('.tabbtn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.id==='tab-'+id));initTab(id);if(id==='trends'){renderCharts();renderProgress();}window.scrollTo({top:0,behavior:REDUCE?'auto':'smooth'});}
+$('tabrow').onclick=e=>{const b=e.target.closest('.tabbtn');if(b)showTab(b.dataset.tab);};
+$('bandChip').onclick=()=>{showBand=!showBand;$('bandChip').classList.toggle('on',showBand);renderCharts();};
+$('numSearch').oninput=e=>{numSearch=e.target.value.toLowerCase().trim();renderNumbers();};
+document.querySelectorAll('#tab-numbers .chip[data-status]').forEach(c=>c.onclick=()=>{numStatus=c.dataset.status;document.querySelectorAll('#tab-numbers .chip[data-status]').forEach(x=>x.classList.toggle('on',x===c));renderNumbers();});
+initTab('overview');injectRel();
+window.addEventListener('beforeprint',()=>{Object.keys(INIT).forEach(initTab);document.querySelectorAll('.tab').forEach(t=>t.classList.add('active'));});
+window.addEventListener('afterprint',()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));$('tab-overview').classList.add('active');});
+</script>
+</body>
+</html>
