@@ -11,6 +11,18 @@ user-invocable: true
 
 # CLAUDE.md — Health Report Analysis Protocol
 
+> **Created by Rahul — https://github.com/rahul1996pp.** Licensed under Apache-2.0: anyone reusing
+> this protocol must keep this attribution and the `NOTICE` file (see `LICENSE`). Every dashboard
+> and report it generates carries the same credit in its footer.
+
+**Detecting protocol changes is automatic — no version number to bump.** On each run the protocol
+**fingerprints its own instruction file** (a content hash, or size + modified-date, of the drop-in
+`CLAUDE.md` — or the plugin `SKILL.md`) and stores it in the cache. If that fingerprint differs from the
+last build, the dashboard is rebuilt from cached data **even when no reports changed** — so simply editing
+this file is the signal; nobody has to remember to bump anything. (A human-readable `version:` label can be
+kept for changelogs, but it is **optional** and is *not* what triggers the rebuild — see "Memory &
+Incremental Re-runs".)
+
 A reusable instruction set for analyzing a folder of personal medical reports
 (blood tests, imaging, ECG/Echo/TMT, prescriptions, eye/skin/urine reports, etc.).
 
@@ -75,6 +87,11 @@ Memory & Incremental Re-runs, What NOT to do, Working Style.
 11. **Privacy first.** This is sensitive personal health data — keep it all on the user's
     machine; never upload it or send it to any external service. Embed all data locally and
     never fetch or transmit anything at runtime.
+12. **Credit the author in every output.** This protocol was created by **Rahul**
+    (https://github.com/rahul1996pp) and is Apache-2.0 licensed. Every generated dashboard and
+    Markdown report must carry a small, unobtrusive **"Protocol by Rahul · github.com/rahul1996pp"**
+    line in its footer (alongside the "Generated on …" stamp), and the `NOTICE`/`LICENSE` must stay
+    intact. This is attribution, not a patient fact — never let it crowd out the medical disclaimer.
 
 ---
 
@@ -85,8 +102,14 @@ already-known. List the folder and **diff it against the cached manifest** (rela
 size + modified date — paths matter once files live in body-system subfolders). Only **new or
 changed** files need full inspection in the steps below;
 unchanged files reuse their cached extraction — this is what keeps re-runs fast and cheap. If
-there is no memory file, this is a first run: process everything. Tell the user briefly what
-you loaded from memory and which files are new/changed.
+there is no memory file, this is a first run: process everything. **Also check whether the protocol
+itself changed — automatically.** Fingerprint the governing instruction file (a content hash, or size +
+modified-date, of the drop-in `CLAUDE.md` / plugin `SKILL.md`) and compare it to the `protocol` fingerprint
+in the cache. If it differs — or can't be computed, or the block is missing — the cached report/dashboard
+were built by an older spec and are **stale**: rebuild them from cached data even when no reports are new
+(the data is unchanged, so no reports are re-read; only the report + dashboard are regenerated). **No
+manual version bump is needed — editing the file is the signal.** Tell the user briefly what you loaded
+from memory, which files are new/changed, **and whether the protocol changed since the last build**.
 
 1. List every file in the folder **and its subfolders** (the tree may already be organised by
    body system) with its type and size.
@@ -220,18 +243,52 @@ For **lab/blood/urine reports**, extract into a structured table per report:
   it so an in-range value isn't falsely flagged.
 - Mark each as `LOW`, `HIGH`, `NORMAL`, or `BORDERLINE` strictly against the printed range.
 - Preserve units exactly. Do not convert silently; if you convert, show both.
+- **Censored / out-of-range values (`> X`, `< X`) are NOT plain numbers.** Labs report a value as
+  "greater than" or "less than" a limit when it falls beyond what the assay can measure (common for
+  **B12, ferritin, D-dimer, hCG, troponin, TSH, IgE, CRP**). **Preserve the operator** — record it
+  as e.g. `>2000` with a `censored` flag, never as the bare number `2000`. Later phases must not
+  trend, project, average, or phrase it as an exact result (see Phase 4 and the Phase 7 build
+  pitfalls). A real bug this prevents: a B12 of `>2000` rendered as the broken sentence
+  "B12 now > 2000".
 - For each marker also capture a one-line **plain-language meaning** ("what it is / why it
   matters") to reuse in the dashboard's explanations.
 - **Re-verify a sample (accuracy second pass).** After extracting, spot-check a random handful
   of values — and **every flagged / critical one** — back against the original scan or PDF, to
   catch transcription or OCR slips *before* anything is trended, charted, or shown.
+- **Read the report's own structure carefully (common extraction traps).** Capture each lab's **own
+  abnormal flag** (`H`/`L`/`*`/`A`/`↑`/`↓`/bold/colour) verbatim **and independently re-derive**
+  in/out-of-range from the value vs the printed range — never rely on just one; a bare `*`/`A` with no
+  direction = "abnormal, direction unknown" (keep it, don't guess). Expand **ditto marks** (`"`, `-do-`,
+  blank-under) to the value they repeat. Resolve the **decimal/thousands separator** by locale (`1,5` EU
+  = `1.5`) and the **date format** (`DD/MM` vs `MM/DD` — auto-resolve only when one reading is
+  impossible, else ask; store dates as ISO `YYYY-MM-DD`). When a marker prints **several reference rows**
+  (male/female, age bands, pregnancy), pick the row matching the confirmed profile; if unknown, keep the
+  whole block and mark `[unclear — please verify]` rather than guessing. Keep **repeated measures**
+  (pre/post, fasting/PP, L/R) as **distinct datapoints** — never average or trend pre against post. Link
+  any "**see comment**" note to its value, and **group all pages/photos of one report** before
+  extracting. (Full checklist: `docs/reference/clinical-reference-libraries.md`.)
 
 For **imaging / ECG / Echo / TMT / eye / prescriptions**, extract:
 - Date, performing facility/doctor (if stated), and the key findings/impression verbatim
   where possible, then a plain-language restatement.
+- **Translate scary-sounding impressions calmly, and define every term.** Many common impressions
+  *sound* alarming but are frequently benign — e.g. trace/mild valve regurgitation, simple liver/
+  kidney cysts, grade I fatty liver, grade I diastolic dysfunction, sinus bradycardia in fit people,
+  incomplete RBBB, a low TI-RADS / colloid thyroid nodule, aortic-valve sclerosis, a cup-to-disc ratio
+  near 0.3, a normal ejection fraction (~50–70%), and a "negative" TMT. Where a finding is commonly
+  benign, **say so plainly to reduce needless alarm**, always closing "confirm with your doctor."
+  Conversely, calmly flag the ones usually worth asking about (e.g. LBBB, frequent PVCs, a positive
+  stress test, ejection fraction under ~50%, raised eye pressure, cup-to-disc > 0.6) as "worth asking
+  your doctor" — **never as a diagnosis.** Define jargon in plain words (*regurgitation* = a small
+  backward valve leak; *ejection fraction* = the % of blood the heart pumps per beat). (Fuller library:
+  `docs/reference/clinical-reference-libraries.md`.)
 - The **body region / organ** the document concerns (used to group findings by system).
-- For prescriptions: list each item (drug/supplement/test/advice) as written, plus a plain
-  explanation of what each is for. Do **not** alter or recommend doses.
+- For prescriptions: list each item (drug/supplement/test/advice) **exactly as written**, plus a
+  one-line plain explanation of **what it is generally for** (e.g. metformin → helps control blood
+  sugar; a statin → lowers cholesterol; levothyroxine → replaces thyroid hormone). **Purpose only — no
+  doses, no "should you take it"; for any interaction question say "ask your doctor or pharmacist."**
+  Treat handwritten or unclear drug names as **low-confidence** — transcribe what's written, never
+  autocorrect to a similar-looking drug, and ask the user. Do **not** alter or recommend doses.
 
 **Non-English / regional-language text:** transcribe it verbatim, then add an English
 translation tagged "(translated)"; mark anything uncertain `[unclear — please verify]` and ask.
@@ -294,9 +351,15 @@ If multiple dated reports exist:
    different units (e.g. cholesterol mg/dL vs mmol/L; glucose mg/dL vs mmol/L). Confirm all
    dates share one unit; if not, **convert to a single unit, show it, and note the conversion** —
    never plot mixed units on one chart.
-8. **Match marker synonyms** so one marker trends as one line, not two — e.g. SGPT = ALT,
-   SGOT = AST, FBS = fasting glucose, Vit D = 25-OH Vitamin D. Map name variants to a single
-   canonical marker before building the trend.
+8. **Match marker synonyms AND watch unit-notation traps** so one marker trends as one line, not two
+   — e.g. SGPT = ALT, SGOT = AST, FBS = fasting glucose, Vit D = 25-OH Vitamin D, TLC = WBC, PCV = Hct.
+   Some units are the **same number in different notation** (ferritin ng/mL = µg/L; Na/K mmol/L = mEq/L;
+   WBC ×10³/µL = ×10⁹/L) — never read that as a real change. Some are **different scales that must be
+   converted or kept apart**: **BUN vs urea** (urea mg/dL = BUN × 2.14 — a US "BUN 15" and an Indian
+   "urea 32" are the same state), **HbA1c % vs mmol/mol**, and **standard CRP vs hs-CRP** (10× different
+   scale — never trend together). Default to **sex-specific ranges** for creatinine, uric acid, GGT,
+   hemoglobin, hematocrit, ferritin. Map every variant to one canonical marker before building the
+   trend. (Conversion factors: `docs/reference/clinical-reference-libraries.md`.)
 9. **Project the trend forward — carefully, and only where it's honest (feeds the "What's
    Ahead" tab, Phase 7).** For a marker with **≥3 real timepoints** and a steady (non-erratic)
    direction, you may extrapolate where it is heading *if the current trend continues* — a
@@ -305,6 +368,24 @@ If multiple dated reports exist:
    here, not a measured result** — label it as such, and remember it **may well be wrong** (real
    life, treatment, and lifestyle change the curve). Never invent a number that the data
    doesn't support, and never turn a projection into a diagnosis.
+10. **Never trend or project a censored value** (`> X` / `< X`, e.g. B12 `>2000`). Show it at the
+    limit with a distinct "actual is beyond the lab's measurable limit" marker, keep the operator in
+    every tooltip/table, and **exclude it from any forward projection** — a value known only as
+    "above 2000" cannot anchor a trend line or a What's-Ahead estimate.
+11. **Don't call noise a trend — gate direction on a "real-change" threshold (biological + analytical
+    variation).** Two results differ partly from natural day-to-day biological variation **and**
+    lab-machine error, not only real change. Before labelling a marker `rising`/`falling` (item 2),
+    check the latest change is **big enough to be real** for *that* marker; if it's smaller, mark it
+    `stable` and say "within normal day-to-day variation — not a real change yet" (no rising/falling
+    arrow). Approximate "real-move" thresholds — a change must roughly exceed these (approximate,
+    lab-dependent, qualitative; **never print a false-precise per-patient statistic**):
+    HbA1c ~7% · hemoglobin ~9% · fasting glucose ~15% · creatinine/eGFR ~15% · total cholesterol ~17% ·
+    LDL ~22% · HDL ~20% · uric acid ~22% · ferritin ~40% · vitamin D ~40% · AST ~40% · triglycerides
+    ~55% · ALT ~50% · TSH ~55%. Tight markers (HbA1c, hemoglobin) move meaningfully with a small %;
+    noisy ones (triglycerides, ALT, TSH, ferritin) need a big % first. Use this to **suppress false
+    alarms, not create them**; keep the ≥3-timepoints rule for projections (item 9); a near-threshold
+    move → "possible early shift — worth re-testing to confirm." (Basis & sources:
+    `docs/reference/clinical-reference-libraries.md`.)
 
 ---
 
@@ -364,9 +445,12 @@ Produce `health_analysis_<YYYY-MM>.md` containing, in this order:
    **rough estimates from the person's own past data, may be wrong, and are not a forecast** —
    confirm everything with a doctor. **No invented numbers/percentages, no diagnosis.** Surfaces
    in the dashboard's "What's Ahead" tab.
-9. **Gaps, body-coverage & suggested tests** — first a **coverage summary**: which body systems
-   the reports actually cover (`checked` / `partly` / `not assessed`), marked **only from real
-   extracted data — never inferred or invented**. Then **suggested scans/tests**, each with
+9. **Gaps, body-coverage & suggested tests** — first a **coverage summary** across the **full
+   whole-body system list** (the comprehensive grid in Phase 7, Doctors tab — bloodwork systems,
+   organ/functional systems, and age/sex-gated screens): which body systems the reports actually
+   cover (`checked` / `partly` / `not assessed`), marked **only from real extracted data — never
+   inferred or invented**, and **listing the not-assessed systems too** so the gaps are visible.
+   Then **suggested scans/tests**, each with
    **"what it would reveal,"** split into **❗ Important** (tied to an out-of-range or trending
    finding) and **➖ Optional** (general screening the current data doesn't flag). Draw suggestions
    from **two sources**: (a) the person's own findings, and (b) **general whole-body screening**.
@@ -433,10 +517,12 @@ here; if something isn't in this spec (or the user has asked to drop it), don't 
   *and* every `ⓘ` detail and Full Map "what you can do" block**, so nothing useful is hidden in
   the PDF.
 - **Encoding:** write the file as UTF-8; verify em-dashes, ×, µ, and emoji render correctly.
-- **Stamp it & manage versions.** Show a **"Generated on &lt;date&gt;"** line plus a one-line
-  **"To update: drop new reports into this folder and re-run"** note in the footer. Re-runs
-  overwrite `health_dashboard_<YYYY-MM>.html`; if you want history, keep the latest as the working
-  file and archive older dated copies rather than letting many pile up.
+- **Stamp it, credit the author & manage versions.** Show a **"Generated on &lt;date&gt;"** line, a
+  one-line **"To update: drop new reports into this folder and re-run"** note, **and the author credit
+  "Protocol by Rahul · github.com/rahul1996pp (Apache-2.0)"** in the footer (small and calm — it must
+  never compete with the medical disclaimer at the top). Re-runs overwrite
+  `health_dashboard_<YYYY-MM>.html`; if you want history, keep the latest as the working file and
+  archive older dated copies rather than letting many pile up.
 
 ### Visual design
 - Cohesive, calm palette (e.g. warm paper background, sage/clay/gold accents). Use an
@@ -476,6 +562,57 @@ This is mandatory, not optional:
 - **Language:** if the user chose a regional language in Phase 0, write the explanations in that
   language (or **bilingually**, English + local), with medical terms glossed in plain words. Keep
   it embedded and offline — never call a translation service.
+
+### Comprehension, accessibility & engagement features (research-backed; for non-medical readers)
+These exist to make the data genuinely understandable to someone with **zero medical background**
+(including elderly, low-literacy, and phone-only users). Build them into the relevant existing tabs —
+**they add no new tab.** All are fully offline and must honour every accuracy rule (no invented
+anchors, goals, or numbers; degrade gracefully on a single report).
+
+- **Read-aloud (offline text-to-speech).** A small 🔊 button on each explanation/card that speaks the
+  text using the browser's built-in `speechSynthesis` (works offline; choose the voice for the chosen
+  language) with a stop control. Big help for elderly/low-literacy/low-vision users. *Caveat:* purely
+  assistive; never autoplay.
+- **Comfort bar (accessibility toggles).** A persistent, in-memory control row: **larger text** (scale
+  a CSS `--fs` variable), **high contrast**, **reduce motion** (also auto-on with
+  `prefers-reduced-motion`), and **language** (if a regional language was chosen). Phone-first, WCAG AA.
+- **Single-value "result on a bar" (for one-off and latest values).** Besides the time-trend charts,
+  give each marker a horizontal inline-SVG bar with the **reference range as a coloured zone**, the
+  value as a marker dot, and a **one-word plain verdict** ("Normal", "A little high"). Laypeople read a
+  coloured bar + gist far better than a number-with-range. *Caveat:* the verdict comes only from the
+  extracted status — never invent it.
+- **Harm-anchor line (only when the lab prints one).** Where a report states a critical/"panic"
+  threshold, draw a faint extra line on that bar labelled "doctors usually aren't concerned until around
+  here" — this calms needless alarm over mildly out-of-range values. *Caveat:* **never invent the
+  anchor**; if no documented threshold, omit it and say "ask your doctor how far out matters."
+- **Goal-range overlay (only when documented).** If a report or the user's doctor set a personal target
+  (e.g. a diabetic HbA1c goal), show that band too — framed as "a target to discuss," never one you set.
+- **Panel scorecard (honest counts, not probabilities).** On Overview, an inline-SVG icon array —
+  "**32 of 38 markers in range**" — using colour **and** shape (colour-blind safe). Turns abstract
+  status into a reassuring, countable picture. *Caveat:* only real counts; **never a risk percentage**.
+- **Progressive "explain simpler" tiers.** Each `ⓘ` detail layers: a one-word **gist** → one plain
+  sentence → the full detail (nested `<details>`/CSS toggles). Gist-first suits low-numeracy readers.
+- **"What this means for your day" line.** One concrete everyday-life translation per finding (e.g.
+  "high triglycerides rarely *feel* like anything now, but raise long-term heart risk — which is why
+  diet and movement matter"). Qualitative only; no prognosis claims. Store in `explanations`.
+- **Analogy/metaphor per marker.** A one-line plain picture ("HDL = the cleanup crew that clears
+  cholesterol"; "eGFR = how fast your kidney filters"). Mark it "a simple picture, not exact biology."
+- **Implementation-intention / tiny-habit builder (Suggestions tab).** A fill-in template — "When
+  &lt;cue&gt;, I will &lt;tiny action&gt;" (e.g. "After dinner, I'll walk 10 minutes") tied to a
+  finding, rendered into a printable plan. Evidence-based, non-manipulative behaviour change. In-memory
+  only (resets on reload — say so). Lifestyle only; no medication/dose intentions.
+- **Auto-generated "questions for your doctor" checklist (printable).** Build the Doctors-tab question
+  list **from the actual out-of-range/trending findings** (e.g. "My triglycerides rose 150→210 — should
+  I worry, and what test next?"), as tappable, printable checkboxes. Questions only — never phrased as
+  conclusions.
+- **"Two-minute version" TL;DR (Overview).** A collapsible top card stating only: what's normal, what
+  to watch, the 3 actions, and the disclaimer — for readers who won't read everything. Keep the
+  disclaimer visible.
+- **Honest uncertainty badges.** Tag each interpretation "clear from your report" vs "general pattern —
+  confirm with your doctor," and define any verbal qualifier used ("borderline", "trending"). Matches
+  the Full Map's confidence labels.
+- **"Fridge card" print summary.** A compact `@media print` layout of the key findings, the questions
+  for the doctor, and the habit plan — a tangible takeaway for a visit.
 
 ### Filtering & interactivity
 The dashboard should feel **explorable, not static**:
@@ -588,7 +725,15 @@ Render a sticky top tab bar. Include the tabs that apply to the data found:
      vague — give enough detail that the user understands *exactly* what to try and *why it works*.
    Don't leave the boxes to speak for themselves — the boxes are the diagram, the two narration
    blocks are the point. Keep confidence labels (strong/moderate/speculative) on every link, and
-   give the **"Hidden areas"** card the same **"what this means for you" + "what you can do"** treatment.
+   give the **"Hidden areas"** card the same treatment — **and make it a real early-warning surface,
+   not a thin list.** For **each** quiet finding, give three things: (1) a fuller plain-language
+   **"what this is and why it's quiet-but-worth-knowing"** (e.g. a value technically in range but
+   trending toward its limit, a borderline ratio, a low-normal that pairs with another finding);
+   (2) the **"what this means for you" + "what you can do"** lifestyle blocks; and (3) **a suggested
+   test or recheck to discuss with a doctor**, drawn from the Doctors-tab "scans & tests" catalog and
+   **cross-linked to it** — e.g. low-normal ferritin drifting down → "ask about iron studies";
+   in-range-but-rising creatinine → "repeat eGFR + urine ACR to confirm"; HbA1c near the top of
+   normal → "recheck in 3–6 months." Keep "discuss with your doctor" framing; no diagnosis, no doses.
 6. **Exercise** — data-supported physical-activity guidance, presented like a friendly coach:
    - Start from what the documents actually show (e.g., measured exercise capacity / METs on
      a TMT, any "daily exercise" advice in the reports) and state it as the **baseline** —
@@ -642,10 +787,22 @@ Render a sticky top tab bar. Include the tabs that apply to the data found:
     for that specialist) and **What to do** (the concrete next step — e.g. which test/scan to
     request, what to bring, what to monitor, when to follow up). Plus a "what to carry to each
     visit" card. Always framed as "discuss with your doctor," never as orders or doses.
-    - **Body-coverage grid (folded in here).** A grid at the top of the tab, one tile per relevant
-      body system (blood sugar/metabolic · cholesterol/heart-risk bloods · thyroid · liver · kidney ·
-      blood count · vitamins/inflammation · heart (ECG/Echo/TMT) · eyes · skin · bones/joints ·
-      abdominal organs — show only those that apply). Each tile shows an **honest status — ✅ checked /
+    - **Body-coverage grid (folded in here) — show the WHOLE body, including what was NOT checked.**
+      A grid at the top of the tab, one tile per body system, grouped so it stays digestible. The
+      point of a coverage *overview* is to reveal gaps, so render the **full standard whole-body list**
+      (every system the data touches **plus** the standard screening areas that weren't assessed), not
+      only the systems with data:
+      **(a) From bloodwork —** blood sugar/metabolic · cholesterol/heart-risk bloods · thyroid · liver ·
+      kidney & urinary · blood count (anemia) · iron & vitamins · inflammation/immune · electrolytes &
+      minerals · hormones/reproductive bloods.
+      **(b) Organs / functional —** heart & circulation (ECG/Echo/TMT/BP) · lungs/respiratory · brain &
+      nervous system · digestive/gut · abdominal organs · bones/joints · eyes/vision · ears/hearing ·
+      skin · dental/oral · mental/emotional wellbeing *(a gentle, optional screen — never inferred from
+      data, framed as "talking to a professional helps — ask your doctor," no diagnosis)* · body
+      measurements (BMI/waist/BP).
+      **(c) Age/sex-gated screens (render only when age/sex confirmed in Phase 0) —** breast · cervical ·
+      prostate · colorectal · bone density (DEXA) · AAA · lung CT for smokers.
+      Each tile shows an **honest status — ✅ checked /
       🟡 partly (seen only indirectly, e.g. organ inferred from blood markers) / ⭕ not assessed** —
       marked **only from real extracted data, never inferred or invented** — with an accessible
       icon+label (never colour alone). Checked tiles link to their findings (My Numbers/Trends);
@@ -667,10 +824,18 @@ Render a sticky top tab bar. Include the tabs that apply to the data found:
       everything with your doctor"** caveat (+ the not-for-emergencies line) sits on this section.
       Framed as "discuss with your doctor," **no diagnosis, no medicines, no doses**. Keep it distinct
       from the checklist (gaps = *why each test matters*; checklist = *tick it off*).
-    - **Follow-up checklist (folded in here).** Include an interactive, **tappable checklist**
-      of the pending tests/scans and follow-ups, with an animated completion bar — in-memory
-      only, so note it **resets on reload**. (This replaces a separate Checklist tab; only split
-      it out if the list is long.)
+    - **Follow-up checklist (folded in here) — reconciles against new reports.** An interactive,
+      **tappable checklist** of the pending tests/scans and follow-ups, with an animated completion
+      bar. **It is not just manual ticking:** the suggested follow-ups are stored in
+      `health_memory.json` (`followups`), and on every re-run the protocol **diffs new reports against
+      the pending items and auto-marks done** any whose result has now arrived — e.g. you suggested an
+      HbA1c recheck and a new panel has HbA1c, or you suggested a thyroid ultrasound and a neck-US
+      report dropped in. Auto-done rows render **pre-checked** with "✓ done on &lt;date&gt; — result:
+      &lt;value&gt; (from &lt;file&gt;)"; still-pending rows stay unchecked. Because the done-state is
+      **re-derived from the data each run**, it survives reloads with **no browser storage** (manual
+      taps for non-lab items, e.g. "saw the cardiologist", remain in-memory and reset on reload — say
+      so). Newly-closed follow-ups also surface in the Overview **"What changed since last visit"**
+      card. (This replaces a separate Checklist tab; only split it out if the list is long.)
 9. **Unclear Items** — two groups: **Resolved (confirmed by the user)**, each tagged as
     user-provided, and **Still unverified** (`[unclear — please verify]`) to re-check against
     the originals.
@@ -701,6 +866,9 @@ changed since last visit" card, and make sure nothing looks empty or broken.
   names **no disease as certain**. The "may be wrong / discuss with your doctor" caveat is
   present wherever a projection appears.
 - Reference ranges shown must be the lab's own, exactly as printed.
+- **A `rising`/`falling` label or trend arrow appears only when the change exceeds the marker's
+  real-change threshold** (Phase 4, item 11); a smaller wobble shows as `stable` / "within normal
+  day-to-day variation," never an arrow — so the dashboard doesn't alarm over noise.
 - The disclaimer must be visually prominent at the top of Overview — never hidden.
 - No diagnosis, no medication-dose advice anywhere in the UI — explanations and "discuss
   with your doctor" framing only.
@@ -732,6 +900,15 @@ can never recur. Known ones:
   body system, each table auto-sizes its own columns, so the columns don't line up between
   sections (ragged "Latest/Unit/Reference/Status/Trend"). Give every table `table-layout:fixed`
   **and** an identical `<colgroup>` (fixed % widths) so all sections align into one grid.
+- **Censored lab values (`> X` / `< X`) are not numbers.** Preserve the operator on extraction; never
+  plot, trend, project, average, or phrase them as an exact value; display "> X" verbatim with a plain
+  "above/below the lab's measurable limit" note. Real bug: a B12 of `>2000` was treated as `2000` and
+  printed as the broken sentence "B12 now > 2000".
+- **Proofread ALL generated text against the data, not just a sample.** After building, read **every**
+  generated sentence in both the Markdown and the HTML and confirm: no operator/unit got concatenated
+  into broken prose; every value, unit, range and sentence in the HTML **matches the Markdown source of
+  truth** (the HTML presents the MD, it never re-derives it); no `[unclear]`/invented value slipped into
+  a sentence; grade 6–8 reading level holds.
 
 ---
 
@@ -744,10 +921,25 @@ Re-check your own output against these criteria (grouped) and fix any failures:
 - [ ] No value was invented; all still-unreadable items are marked `[unclear]`.
 - [ ] **Accuracy second pass done** — a random sample of values, plus every flagged/critical one,
       was re-checked against the original scan/PDF.
+- [ ] **Censored values handled** — every `> X` / `< X` value (e.g. B12 `>2000`) keeps its operator,
+      is **not** trended/projected/averaged as an exact number, and is shown verbatim with an
+      "above/below the lab's measurable limit" note.
+- [ ] **All generated text proofread** — every sentence in the HTML matches the Markdown source exactly
+      (values/units/ranges/dates); no concatenated-operator phrasing ("B12 now > 2000"); no
+      `[unclear]`/invented value in prose.
 - [ ] Reference ranges are the lab's own, copied exactly; where a lab changed a marker's range,
       each value is judged against the range valid on *its* date (no false flags).
 - [ ] Directions/trends arithmetically correct; **units consistent** per trended marker
       (conversions noted); **synonyms unified** (e.g. SGPT/ALT) so each trends as one line.
+- [ ] **Noise not called a trend** — `rising`/`falling`/arrows applied only when a change exceeds the
+      marker's approximate real-change threshold (biological+analytical variation); smaller wobble
+      shown as "within normal variation."
+- [ ] **Unit-notation traps handled** — BUN↔urea (×2.14), HbA1c %↔mmol/mol, CRP vs hs-CRP not trended
+      together; same-number notations (TLC=WBC, PCV=Hct, ferritin ng/mL=µg/L, Na/K mmol/L=mEq/L) not read
+      as change; sex-specific ranges used.
+- [ ] **Extraction traps handled** — lab's own flags captured + range re-derived; ditto marks expanded;
+      decimal/date locale resolved; correct sex/age reference row chosen; repeated measures (pre/post)
+      kept distinct; "see comment" linked; multi-page reports grouped.
 - [ ] Charted/table values match the Markdown trend tables exactly; no `[unclear]`/invented value
       is plotted or displayed anywhere.
 - [ ] No second patient's data mixed in; ambiguous dates disambiguated; non-English text translated.
@@ -786,11 +978,27 @@ Re-check your own output against these criteria (grouped) and fix any failures:
       report degrades to "not enough history yet" with projections hidden.
 - [ ] Imaging/scan results shown as **plain-language text** (file link optional); **no images or
       PDFs embedded**, and the dashboard works on its own without them.
+- [ ] **Imaging/ECG/Echo/TMT impressions translated calmly** — jargon defined; commonly-benign findings
+      (trace regurgitation, simple cysts, grade I, sinus brady, low TI-RADS…) said plainly to reduce
+      alarm; "ask your doctor" ones flagged calmly; **no diagnosis**.
+- [ ] **Prescriptions explained as purpose only** — what each item is generally for, **no doses/advice**;
+      handwritten/unclear names low-confidence and asked, never autocorrected.
 - [ ] **Exercise tab** has offline-embedded SVG/figure per exercise + in-depth "why/how"; no
       prescriptive/dose claims.
 - [ ] **Doctors tab** gives per specialist **what to ask** + **what to do**, plus a "what to carry" card.
-- [ ] **Body-coverage grid** present — status (✅ checked / 🟡 partly / ⭕ not assessed) **honest** (no
-      system marked checked without real data), accessible (icon+label, keyboard), tiles link correctly.
+- [ ] **Body-coverage grid** present and **comprehensive** — covers the **full whole-body system list**
+      (bloodwork + organ/functional + age/sex-gated), **including the not-assessed systems** so gaps
+      show; status (✅ checked / 🟡 partly / ⭕ not assessed) **honest** (no system marked checked without
+      real data), accessible (icon+label, keyboard), tiles link correctly; mental-wellbeing tile framed gently.
+- [ ] **Follow-up checklist reconciles** — pending follow-ups stored in `health_memory.json`; on re-run,
+      items whose result has arrived in a new report are **auto-marked done** with value/date/source;
+      new pending items added; surfaced in "What changed since last visit".
+- [ ] **"Hidden areas" card is deep** — each quiet finding has the "why it's worth knowing" + "what you
+      can do" blocks **and a suggested test/recheck** cross-linked to the Doctors catalog.
+- [ ] **Comprehension/accessibility features present** — read-aloud, comfort bar (large text/contrast/
+      reduce-motion/language), single-value result bars (+ harm-anchor only when documented), panel
+      scorecard (counts not %), progressive `ⓘ` tiers, habit builder, printable doctor-questions,
+      "two-minute" TL;DR — all offline, no invented anchors/goals/percentages.
 - [ ] **Suggested tests** split **❗ Important / ➖ Optional**, each with "what it checks / why," from
       both the person's findings **and** general whole-body screening; **age/sex-specific screenings
       only when age/sex confirmed** (else neutral "ask your doctor" note) — **never assumed**; the
@@ -823,7 +1031,8 @@ Re-check your own output against these criteria (grouped) and fix any failures:
       embedded at the user's request, downscale and keep it well under ~15 MB.
 - [ ] No browser-storage APIs; no patient data sent anywhere; nothing fetched at runtime.
 - [ ] Any critical/panic value surfaced calmly; emergency note present.
-- [ ] Footer shows **"Generated on &lt;date&gt;"** + a **"to update: drop new reports & re-run"** note.
+- [ ] Footer shows **"Generated on &lt;date&gt;"** + a **"to update: drop new reports & re-run"** note
+      + the author credit **"Protocol by Rahul · github.com/rahul1996pp (Apache-2.0)"** (calm, below the disclaimer).
 
 **Files & memory**
 - [ ] Originals intact; `rename_log.txt` if renamed, `move_log.txt` if moved.
@@ -855,9 +1064,18 @@ run. Keep it accurate and up to date.
 - `imaging` — imaging / ECG / Echo / TMT / eye findings + impressions.
 - `resolved` — every user-confirmed answer from Phase 3, so you never re-ask.
 - `unclear_open` — still-unverified items.
+- `followups` — the suggested tests/scans/referrals and their state
+  (`{id, system, what, why, status: pending|done, suggested_date, completed_date, result_value,
+  source_file}`), so the Doctors-tab follow-up checklist can **auto-mark items done when a later report
+  supplies the result** and persist that across re-runs without browser storage.
 - `trends`, `interlinks` — the analysis, so it needn't be recomputed from scratch. The
   **What's Ahead projections are *derived* from these** at build time (not cached separately),
   so they always reflect the latest merged data and never drift out of sync.
+- `protocol` — the **fingerprint of the protocol that produced the current outputs** (a content hash, or
+  size + modified-date, of the governing `CLAUDE.md`/`SKILL.md`; an optional human `version` label may sit
+  alongside it). This is the **rebuild key, computed automatically**: if the current protocol file's
+  fingerprint differs from this, the cached report/dashboard are stale and must be regenerated from cached
+  data — even with no new reports. No manual version bumping required.
 - `outputs` — generated files (`extracted_data.md`, `health_analysis_*.md`,
   `health_dashboard_*.html`, `rename_log.txt`, `move_log.txt`). **Keep a single dashboard
   `.html`** — don't write companion/duplicate copies.
@@ -866,12 +1084,19 @@ run. Keep it accurate and up to date.
 1. **Load** `health_memory.json` (if absent → first run: do everything, then create it).
 2. **Diff** the current folder against `files`: classify each as *unchanged* (reuse cache),
    *changed* (re-extract), or *new* (extract fresh).
-3. **Process only new/changed files**, asking inline (Phase 3) about anything unclear in them.
+3. **Fingerprint the protocol** (hash or size + modified-date of the governing `CLAUDE.md`/`SKILL.md`) and
+   compare to the cached `protocol` fingerprint. Mark the outputs **stale** if it changed, can't be
+   computed, or the block is missing — automatically, with no manual version bump.
+4. **Process only new/changed files**, asking inline (Phase 3) about anything unclear in them.
    Reuse `resolved` answers — never re-ask what the user already told you.
-4. **Merge** new data into the cached data; recompute trends/interlinks across the full
-   (cached + new) dataset.
-5. **Regenerate** the Markdown report and HTML dashboard from the merged data.
-6. **Update** `health_memory.json` (manifest + data + resolved + outputs).
+5. **Merge** new data into the cached data; recompute trends/interlinks across the full
+   (cached + new) dataset *(skip the recompute when no files changed — the data is unchanged)*.
+6. **Regenerate** the Markdown report and HTML dashboard **whenever there are new/changed files OR the
+   protocol is stale** — rebuilding from cached data is cheap and guarantees the dashboard matches the
+   current spec. Only when **both** are unchanged may you skip the rebuild and say everything is already
+   up to date.
+7. **Update** `health_memory.json` (manifest + data + resolved + outputs + the current `protocol`
+   fingerprint).
 
 **Adding files later:** the user can simply drop new reports into the folder and re-run — the
 protocol uses **memory + only the new files**, so it stays fast and cheap, and the dashboard's
@@ -906,8 +1131,15 @@ trends and findings extend automatically. Keep `health_memory.json` out of the r
 - Don't pass a user-confirmed value off as if it came from a document, or vice-versa.
 - Don't re-read unchanged sources when `health_memory.json` already holds them — load the
   cache and process only new/changed files.
+- Don't report "nothing to do / already up to date" when the **protocol changed** since the last build
+  — a spec change makes the cached dashboard stale, so rebuild it from cached data (no reports need
+  re-reading). Only say "up to date" when **both** the reports **and** the protocol are unchanged.
 - Don't re-ask the user something they already answered — reuse `resolved` from the cache.
 - Don't rename, delete, or treat `health_memory.json` as a medical source; it is only a cache.
+- Don't treat a censored value (`> X` / `< X`, e.g. B12 `>2000`) as the bare number — keep the
+  operator, and never trend, project, or phrase it as an exact result.
+- Don't ship any generated dashboard/report without the author credit
+  (**Protocol by Rahul · github.com/rahul1996pp**) in the footer, or strip the `NOTICE`/`LICENSE`.
 
 ---
 

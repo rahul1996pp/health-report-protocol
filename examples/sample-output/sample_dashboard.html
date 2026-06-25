@@ -55,7 +55,7 @@
   tr.expl td{background:#f4f6f2;color:#42514a;font-size:12.5px}
   .syshead{font-size:14px;color:var(--sage-d);margin:14px 0 6px;font-weight:700;font-family:var(--serif)}
   .pilltag{font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px;white-space:nowrap}
-  .s-high{background:#f8e3dd;color:#8c3322}.s-low{background:#f7ecd2;color:#8a6a1e}.s-norm{background:#e0efe6;color:var(--green)}.s-watch{background:#ece4f0;color:#6a4a78}
+  .s-high{background:#f8e3dd;color:#8c3322}.s-low{background:#f7ecd2;color:#8a6a1e}.s-norm{background:#e0efe6;color:var(--green)}.s-watch{background:#ece4f0;color:#6a4a78}.s-cens{background:#e6eef2;color:#2f5667}
   .arrow{font-weight:700}.a-up{color:var(--red)}.a-down{color:var(--green)}.a-flat{color:var(--muted)}.a-fluct{color:var(--amber)}
   .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 12px}
   .chip{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 12px;font:600 12.5px var(--sans);color:var(--ink);cursor:pointer}
@@ -91,6 +91,7 @@
   .fill-good{background:linear-gradient(90deg,#7bbf9a,#3f6b56)}.fill-warn{background:linear-gradient(90deg,#e7b86a,#cf8a1e)}.fill-bad{background:linear-gradient(90deg,#e0937e,#c0392b)}
   .check{display:flex;gap:11px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:12px 13px;margin-bottom:9px;cursor:pointer}
   .check input{width:20px;height:20px;margin-top:1px;accent-color:var(--sage);flex:0 0 auto}.check .ct{font-size:14px}.check .cd{font-size:12.5px;color:var(--muted);margin-top:2px}.check.done .ct{text-decoration:line-through;color:var(--muted)}
+  .check .res{font-size:12px;color:var(--sage-d);margin-top:3px;font-weight:600}
   .exgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
   .exfig{width:100%;height:110px;background:#eef4f0;border-radius:10px;margin-bottom:10px;display:block}
   .exwhy2{font-size:12.5px;color:#3c4a43;background:#f3f6f2;border-radius:8px;padding:8px 10px;margin-top:8px}
@@ -104,6 +105,7 @@
   .foodcol ul{list-style:none}.foodcol li{font-size:13px;margin:8px 0}
   .foodcol li b{color:var(--ink)}.foodcol li .why{color:var(--muted);display:block;font-size:11.8px;margin-top:1px}
   .foodcol li .swap{color:var(--sage-d);display:block;font-size:11.8px;margin-top:1px}.foodcol li .swap b{color:var(--sage-d)}
+  .covgroup{font-size:13px;color:var(--sage-d);font-weight:700;font-family:var(--serif);margin:14px 0 6px}
   .covgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:4px}
   .covtile{display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--paper);text-align:left;font:inherit;color:var(--ink)}
   button.covtile{cursor:pointer}button.covtile:hover{box-shadow:0 0 0 2px var(--sage)}
@@ -124,14 +126,33 @@
   .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   footer{font-size:12px;color:var(--muted);text-align:center;margin:26px 0}
   .demo{background:#eef4f0;border:1px dashed var(--sage);border-radius:10px;padding:8px 12px;font-size:12.5px;color:var(--sage-d);margin:10px 0}
+  /* ── new feature styles ── */
+  .comfortbar{background:var(--paper);border-bottom:1px solid var(--line)}
+  .cbrow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;padding:7px 0}
+  .cblabel{font-size:12.5px;color:var(--muted);font-weight:700}
+  .tldr{background:#eef4f0;border:1px solid #d6e6dd;border-radius:12px;padding:4px 14px 8px;margin-top:12px}
+  .tldr summary{font-weight:700;cursor:pointer;font-family:var(--serif);font-size:16px;padding:8px 0}
+  .scwrap{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0 6px;font-size:19px;line-height:1}
+  .scg{display:inline-block}.scg.sc-ok{color:var(--green)}.scg.sc-hi{color:var(--red)}.scg.sc-lo{color:var(--amber)}.scg.sc-cens{color:var(--sky)}
+  .gist{display:inline-block;font-size:11px;font-weight:700;background:#eef1ec;color:var(--sage-d);border-radius:6px;padding:2px 8px;margin-bottom:6px}
+  .rbar{margin:7px 0}.rbar svg{width:100%;max-width:360px;height:38px;display:block}
+  .dayline{font-size:12.5px;color:#3c4a43;background:#f3f6f2;border-radius:8px;padding:7px 10px;margin-top:7px}
+  .expl-in p{margin-top:5px}
+  .varbadge{display:inline-block;font-size:10.5px;font-weight:700;color:#2f5667;background:#e6eef2;border:1px solid #cbdde6;border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+  .habrow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;font-size:13.5px;margin:8px 0}
+  .habrow input{border:1px solid var(--line);border-radius:8px;padding:6px 9px;font:500 13px var(--sans);min-width:150px;flex:1}
+  body.contrast{--ink:#101010;--muted:#333;--line:#9a9484;--paper:#fff;--bg:#fff;--sage-d:#27493b}
+  body.big{zoom:1.15}
+  body.reduce *{animation:none!important;transition:none!important}
+  body.reduce .chart polyline{stroke-dashoffset:0!important}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.chart polyline{stroke-dashoffset:0}}
-  @media print{.tabbar,.toolbar{display:none!important}.tab{display:block!important}}
+  @media print{.tabbar,.toolbar,.comfortbar{display:none!important}.tab{display:block!important}tr.expl{display:table-row!important}.tldr[open] summary{}}
 </style>
 </head>
 <body>
 <header class="hero"><div class="wrap">
   <h1>My Health Companion</h1>
-  <div class="who"><span>👤 Rahul · Anantapur, India</span><span>🍽️ South-Indian (Rayalaseema)</span><span>🧪 3 lab panels</span><span>⚠️ DEMO · 100% synthetic data</span></div>
+  <div class="who"><span>👤 Rahul · Anantapur, India</span><span>🍽️ South-Indian (Rayalaseema)</span><span>🧪 3 lab panels + 1 scan</span><span>⚠️ DEMO · 100% synthetic data</span></div>
 </div></header>
 <nav class="tabbar"><div class="wrap"><div class="row" id="tabrow">
   <button class="tabbtn active" data-tab="overview"><span class="ic">🏠</span>Overview</button>
@@ -144,14 +165,33 @@
   <button class="tabbtn" data-tab="doctors"><span class="ic">🩺</span>Doctors</button>
   <button class="tabbtn" data-tab="unclear"><span class="ic">❓</span>Unclear</button>
 </div></div></nav>
+<div class="comfortbar"><div class="wrap"><div class="cbrow">
+  <span class="cblabel">⚙️ Comfort &amp; access:</span>
+  <button class="chip" id="cb-big" aria-pressed="false">🔠 Larger text</button>
+  <button class="chip" id="cb-contrast" aria-pressed="false">◐ High contrast</button>
+  <button class="chip" id="cb-motion" aria-pressed="false">🎬 Reduce motion</button>
+  <button class="chip" id="cb-read" aria-pressed="false">🔊 Read this tab</button>
+</div></div></div>
 <div class="wrap">
 
 <div class="tab active" id="tab-overview"><section class="block">
   <div class="disc"><strong>⚠️ Informational organization only — not a medical diagnosis.</strong> This is a <b>synthetic demo</b> (fictional person "Rahul", invented values). The real protocol takes values only from your reports or your confirmed answers, and asks you to verify everything with a doctor.
   <div class="emerg">🚑 <strong>Not for emergencies.</strong> For severe symptoms call your local emergency number.</div></div>
-  <div class="note-card" style="margin-top:12px">👋 <strong>How to use this:</strong> tap the tabs. <b>Trends</b> = each marker over time. <b>What's Ahead</b> = where your numbers may head (rough estimates only). <b>My Numbers</b> = every result; tap <b>ⓘ</b> for a plain explanation. <b>Full Map</b> connects findings and says what to do. ✨ <b>Tip:</b> highlighted findings jump to the matching chart.</div>
+
+  <details class="tldr" open><summary>📋 The two-minute version</summary>
+    <ul class="tick">
+      <li><b>Mostly okay:</b> 6 of 11 markers are in their normal range; vitamin D recovered into the healthy band.</li>
+      <li><b>Watch together:</b> cholesterol, LDL, triglycerides and HbA1c are drifting up as one early metabolic pattern; a mild <b>grade I fatty liver</b> was seen on ultrasound (commonly benign, often improvable).</li>
+      <li><b>Do 3 things:</b> trim refined carbs &amp; sugar, walk ~30 min most days, and recheck lipids &amp; HbA1c in ~3 months.</li>
+      <li><b>Remember:</b> this is information, not a diagnosis — confirm everything with your doctor.</li>
+    </ul></details>
+
+  <div class="note-card" style="margin-top:12px">👋 <strong>How to use this:</strong> tap the tabs. <b>Trends</b> = each marker over time. <b>What's Ahead</b> = where your numbers may head (rough estimates only). <b>My Numbers</b> = every result; tap <b>ⓘ</b> for a plain explanation + a simple bar. <b>Full Map</b> connects findings and says what to do. ✨ <b>Tip:</b> use the <b>Comfort &amp; access</b> bar above for bigger text, high contrast, or to have a tab read aloud.</div>
+
+  <div class="card"><h3>📊 Your panel at a glance</h3><div id="scorecard"></div></div>
+
   <div class="grid g2" style="margin-top:14px">
-    <div class="card" style="border-left:5px solid var(--green)"><h3>🌟 What's going well</h3><ul class="tick"><li>Vitamin D improved 22 → 28 → 35 (now normal).</li><li>Thyroid (TSH), liver (ALT) and haemoglobin all normal.</li></ul></div>
+    <div class="card" style="border-left:5px solid var(--green)"><h3>🌟 What's going well</h3><ul class="tick"><li>Vitamin D improved 22 → 28 → 35 (now normal).</li><li>Thyroid (TSH), liver enzyme (ALT) and haemoglobin all normal.</li></ul></div>
     <div class="card" style="border-left:5px solid var(--clay)"><h3>🎯 If you do only 3 things</h3><ul class="tick">
       <li><b>Trim refined carbs &amp; sugar</b> <button class="golink" data-go="c:lipid">lipids ↗</button> <button class="golink" data-go="c:a1c">HbA1c ↗</button></li>
       <li><b>Walk ~30 min most days</b> <button class="golink" data-go="tab:exercise">Exercise ↗</button></li>
@@ -159,12 +199,16 @@
   </div>
   <h2 class="sec" style="margin-top:18px">At a glance <small>— latest status</small></h2>
   <div class="grid g2"><div class="card"><ul class="statlist" id="glanceA"></ul></div><div class="card"><ul class="statlist" id="glanceB"></ul></div></div>
-  <div class="demo">Imaging &amp; scans: <b>none in this example</b> (blood panels only). When real scans exist, the protocol lists each finding here in plain words with an optional link to the file.</div>
+  <div class="grid g2" style="margin-top:2px">
+    <div class="card" style="border-left:5px solid var(--sky)"><h3>🩻 Scans &amp; imaging — in plain words</h3><div id="imaging"></div></div>
+    <div class="card" style="border-left:5px solid var(--plum)"><h3>💊 Your prescriptions — what each is for</h3><div id="rx"></div></div>
+  </div>
 </section></div>
 
 <div class="tab" id="tab-trends"><section class="block">
   <h2 class="sec">Trends over time <small>— green band = normal range</small></h2>
   <p class="lead"><strong>How to read this:</strong> each dot is one test date; inside the green band = in range. Hover/tap a dot for the value + the reference range. Tap a legend item to hide a line.</p>
+  <div class="note-card" style="margin-bottom:12px">🧪 <b>How we read a trend:</b> results naturally wobble a little between tests (your body's rhythm + the lab machine). We only call something "rising" or "falling" when the change is <b>big enough to be real</b> for that marker — otherwise we mark it <b>stable, within normal variation</b>, so you're never alarmed by noise.</div>
   <div class="toolbar"><span style="font-size:12.5px;color:var(--muted)">Show:</span><span id="trendFilters"></span><button class="chip on" id="bandChip">Reference band</button></div>
   <div id="charts"></div>
   <h2 class="sec" style="margin-top:20px">Retest targets &amp; progress <small>— current vs. a target to discuss</small></h2>
@@ -195,7 +239,7 @@
 
 <div class="tab" id="tab-numbers"><section class="block">
   <h2 class="sec">My Numbers <small>— latest value per marker</small></h2>
-  <p class="lead">Tap <span class="info" aria-hidden="true">i</span> for a plain explanation. Status: <span class="pilltag s-high">▲ HIGH</span> <span class="pilltag s-norm">● NORMAL</span> · trend ▲ rising ▼ falling → stable. <b>Latest = 12 Aug 2024 panel.</b></p>
+  <p class="lead">Tap <span class="info" aria-hidden="true">i</span> for a plain explanation + a simple bar. Status: <span class="pilltag s-high">▲ HIGH</span> <span class="pilltag s-norm">● NORMAL</span> <span class="pilltag s-cens">≁ ABOVE LIMIT</span> · trend ▲ rising ▼ falling → stable. <b>Latest = 12 Aug 2024 panel.</b></p>
   <div class="toolbar"><input class="search" id="numSearch" placeholder="🔍 Search marker…"><button class="chip on" data-status="all">All</button><button class="chip" data-status="out">Out of range</button><button class="chip" data-status="high">High</button></div>
   <div id="numbers"></div>
 </section></div>
@@ -205,6 +249,7 @@
   <p class="lead">Each chain has a <b>"What's happening to you"</b> note and a <b>"What you can do about it"</b> block. Confidence: <span class="conf c-strong">strong</span> · <span class="conf c-mod">moderate</span> · <span class="conf c-spec">speculative</span>.</p>
   <div id="cascades"></div>
   <h2 class="sec" style="margin-top:14px">🔎 Hidden areas <small>— quiet findings worth knowing</small></h2>
+  <p class="lead">Values that aren't loudly "abnormal" but are worth a look — each with a plain note and, where useful, a test to discuss.</p>
   <div class="grid g2" id="hidden"></div>
 </section></div>
 
@@ -224,6 +269,12 @@
   <h2 class="sec">Suggestions <small>— plain-language, data-supported</small></h2>
   <p class="lead">Food guidance is <b>location-aware</b> (Anantapur / South-Indian). Medical actions framed as "discuss with your doctor."</p>
   <div class="grid g2" id="suggestions"></div>
+  <div class="card" style="border-left:5px solid var(--sage)"><h3>🎯 Make a tiny-habit plan</h3>
+    <p class="note">Attach one tiny action to something you already do — research says this sticks far better than "try harder." Builds a printable plan.</p>
+    <div class="habrow">When <input id="hcue" placeholder="e.g. after dinner" aria-label="cue"> , I will <input id="hact" placeholder="e.g. walk 10 minutes" aria-label="action"> <button class="chip on" id="habAdd">＋ Add</button></div>
+    <ul class="tick" id="habList"></ul>
+    <p class="note" id="habNote" style="display:none">📄 These print with the dashboard. (Held only on this screen — they reset if you reload.)</p>
+  </div>
   <h2 class="sec" style="margin-top:16px">🍽️ Can enjoy vs. best to have rarely <small>— local, tied to your numbers</small></h2>
   <p class="lead">Supportive, not "banned" — smaller portions &amp; swaps, framed for South-Indian (Rayalaseema) food. Each "rarely" item has a realistic local swap. Discuss with your doctor or a dietitian.</p>
   <div id="food"></div>
@@ -233,15 +284,19 @@
   <h2 class="sec">Doctors &amp; next steps <small>— who, what to ask, what to do</small></h2>
   <p class="lead">In priority order — all "discuss with your doctor," never orders.</p>
   <div id="doctors"></div>
-  <h2 class="sec" style="margin-top:18px">🗺️ Body coverage so far <small>— what your reports have checked</small></h2>
-  <p class="lead">From your reports only: <b>✅ checked</b> · <b>🟡 seen only indirectly</b> · <b>⭕ not assessed</b>. Tap a checked tile to jump to its results.</p>
-  <div class="covgrid" id="coverage"></div>
+  <div class="card" style="border-left:5px solid var(--sky)"><h3>📝 Questions to take to your visit <small style="font-weight:400;color:var(--muted);font-size:12px">— built from your findings; tick what you ask</small></h3>
+    <p class="note">These are <b>questions, not conclusions</b>. They print with the dashboard so you can carry them.</p>
+    <div id="dq"></div></div>
+  <h2 class="sec" style="margin-top:18px">🗺️ Body coverage so far <small>— the whole body, including what was NOT checked</small></h2>
+  <p class="lead">A coverage overview shows the <b>gaps too</b>. From your reports only: <b>✅ checked</b> · <b>🟡 seen only indirectly</b> · <b>⭕ not assessed</b>. Tap a checked tile to jump to its results.</p>
+  <div id="coverage"></div>
   <h2 class="sec" style="margin-top:18px">🔬 Scans &amp; tests to know more <small>— ❗ important vs ➖ optional, and why</small></h2>
   <div class="caveat" style="margin-top:0">🤖 <strong>These are general AI suggestions, not personalised to your full history</strong> — your doctor decides what you actually need. No medicines or doses here, just tests to discuss.
   <div class="emerg">🚑 <strong>Not for emergencies.</strong> For severe symptoms call your local emergency number.</div></div>
   <div id="tests"></div>
   <div class="card" id="screennote" style="margin-top:12px"></div>
-  <h2 class="sec" style="margin-top:18px">Follow-up checklist <small>— tap to tick off (resets on reload)</small></h2>
+  <h2 class="sec" style="margin-top:18px">Follow-up checklist <small>— auto-ticks from new reports; manual taps reset on reload</small></h2>
+  <p class="lead">✓ Items marked done were <b>auto-reconciled from your newest reports</b> — when you add a result, the matching item ticks itself.</p>
   <div class="prog"><div class="top"><span><b id="ck-count">0</b> of <span id="ck-total">0</span> done</span><span id="ck-pct">0%</span></div><div class="bar"><span class="fill-good" id="ck-bar"></span></div></div>
   <div id="checklist"></div>
 </section></div>
@@ -253,41 +308,54 @@
   <div class="grid g2" id="unclear"></div>
 </section></div>
 
-<footer class="wrap"><b>Generated on 22 Jun 2026</b> · <b>synthetic demo</b>, fictional data · fully offline, nothing sent anywhere · no browser storage.<br>To update: drop new reports into this folder and re-run.</footer>
+<footer class="wrap"><b>Generated on 26 Jun 2026</b> · <b>synthetic demo</b>, fictional data · fully offline, nothing sent anywhere · no browser storage.<br>To update: drop new reports into this folder and re-run.<br><b>Protocol by Rahul · <a href="https://github.com/rahul1996pp">github.com/rahul1996pp</a></b> · Apache-2.0 — keep this credit &amp; the NOTICE file.</footer>
 </div>
 <div class="ctip" id="ctip"></div>
 <script>
 const LBL=['Aug 2023','Feb 2024','Aug 2024'];
 const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const SER={a1c:[5.3,5.5,5.7],glu:[90,92,95],tc:[198,210,225],tg:[145,160,180],ldl:[120,130,140],hdl:[46,45,44],tsh:[2.0,2.1,2.4],alt:[32,30,28],vitd:[22,28,35],hb:[14.0,14.2,14.5]};
-// What's-Ahead projections — estimate for the NEXT panel if the recent trend simply continued (≥3 real points only)
 const PROJ_LBL='Feb 2025 (est.)';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
 const GLANCE_A=[['Total cholesterol','225 mg/dL','high','Rising; target <200','c:lipid'],['LDL cholesterol','140 mg/dL','high','Rising; target <100','c:lipid'],['Triglycerides','180 mg/dL','high','Rising; target <150','c:lipid'],['HbA1c','5.7 %','high','Entered pre-diabetic band','c:a1c']];
-const GLANCE_B=[['Vitamin D','35 ng/mL','norm','Improved 22 → 35','c:vitd'],['Thyroid (TSH)','2.4 µIU/mL','norm','Normal'],['Liver (ALT)','28 U/L','norm','Normal'],['Haemoglobin','14.5 g/dL','norm','Normal']];
+const GLANCE_B=[['Vitamin D','35 ng/mL','norm','Improved 22 → 35','c:vitd'],['Vitamin B12','>2000 pg/mL','watch','Above the test’s limit (supplement)','m:Vitamin B12'],['Liver (ALT)','28 U/L','norm','Normal'],['Haemoglobin','14.5 g/dL','norm','Steady (within normal variation)']];
 
+// plain meaning · "for your day" line · simple analogy folded in
 const EXPL={
 'HbA1c':'Your average blood sugar over ~3 months. 5.7–6.4% is the "pre-diabetes" zone — yours just reached 5.7%, an early amber flag that diet and movement can pull back down.',
 'Glucose – fasting':'Blood sugar after an overnight fast. Yours is high-normal — fine now, worth watching alongside the HbA1c.',
 'Total cholesterol':'All cholesterol added together. Yours is above target (225; aim <200) and rising.',
 'Triglycerides':'A fat carried in the blood; high levels raise heart risk. Yours (180; target <150) moves most with diet and exercise.',
-'LDL':'The "bad" cholesterol that builds up in artery walls. Yours rose to 140 (target <100) — a key number to bring down.',
-'HDL':'The "good" cholesterol that clears fat from arteries; higher is better. Yours is just at the line (44; ≥40) — exercise nudges it up.',
+'LDL':'The "bad" cholesterol that builds up in artery walls — think of it as the stuff that clogs the pipes. Yours rose to 140 (target <100), a key number to bring down.',
+'HDL':'The "good" cholesterol — the cleanup crew that clears fat from arteries; higher is better. Yours is just at the line (44; ≥40) and exercise nudges it up.',
 'TSH':'The brain\'s "turn up the thyroid" signal. Yours is normal.',
-'ALT (SGPT)':'A liver enzyme that rises when liver cells are stressed. Yours is normal.',
+'ALT (SGPT)':'A liver enzyme (also called SGPT) that rises when liver cells are stressed. Yours is normal — even with the mild fatty liver on the scan.',
 'Vitamin D (25-OH)':'Vital for bones and immunity; below 30 is "insufficient". Yours improved 22 → 28 → 35 (now fine) — the supplement is working.',
-'Haemoglobin':'The protein in red cells that carries oxygen. Yours is healthy.'
+'Vitamin B12':'Supports nerves and red blood cells. Your lab reported it as ">2000", meaning it was ABOVE the highest level the test can measure — the true number may be higher. This is common when taking a B12 supplement or injection and is usually not harmful. Discuss with your doctor.',
+'Haemoglobin':'The protein in red cells that carries oxygen. Yours looks like it rose 14.0 → 14.2 → 14.5, but that is within normal day-to-day variation for haemoglobin — not a real upward trend.'
 };
+const DAY={
+'HbA1c':'a pre-diabetic HbA1c rarely "feels" like anything — that\'s exactly why catching it on paper now matters.',
+'Triglycerides':'these move fastest with what you eat and drink this week — a few swaps show up at the next test.',
+'LDL':'no symptoms day-to-day, but it quietly shapes long-term heart risk, so small steady changes count.',
+'Vitamin B12':'a high number from a supplement isn\'t something you usually feel — just worth mentioning to your doctor.',
+'Haemoglobin':'nothing to do here — it\'s healthy and steady.'
+};
+// bar scale: [scaleMin, scaleMax, normLo, normHi, value]; censored handled separately
+const RBAR={
+'HbA1c':[4,7,4,5.6,5.7],'Glucose – fasting':[70,140,70,99,95],'Total cholesterol':[120,260,120,200,225],
+'Triglycerides':[50,260,50,150,180],'LDL':[50,200,50,100,140],'HDL':[20,80,40,80,44],
+'TSH':[0,5,0.35,4.94,2.4],'ALT (SGPT)':[0,80,0,45,28],'Vitamin D (25-OH)':[0,80,30,80,35],'Haemoglobin':[10,18,13,17,14.5]};
 
 const SYS=[
 ['Metabolic & diabetes',[['HbA1c','5.7','%','4–5.6','high','up','a1c'],['Glucose – fasting','95','mg/dL','70–99','norm','up','a1c']]],
 ['Lipids / cardiac risk',[['Total cholesterol','225','mg/dL','<200','high','up','lipid'],['Triglycerides','180','mg/dL','<150','high','up','lipid'],['LDL','140','mg/dL','<100','high','up','lipid'],['HDL','44','mg/dL','≥40','norm','flat','lipid']]],
 ['Thyroid',[['TSH','2.4','µIU/mL','0.35–4.94','norm','up','tsh']]],
 ['Liver',[['ALT (SGPT)','28','U/L','0–45','norm','down','alt']]],
-['Vitamins',[['Vitamin D (25-OH)','35','ng/mL','30–100','norm','up','vitd']]],
-['Hematology',[['Haemoglobin','14.5','g/dL','13–17','norm','up','hb']]]
+['Vitamins',[['Vitamin D (25-OH)','35','ng/mL','30–100','norm','up','vitd'],['Vitamin B12','>2000','pg/mL','200–900','cens','na',null]]],
+['Hematology',[['Haemoglobin','14.5','g/dL','13–17','norm','flat','hb']]]
 ];
 
 const CHARTS=[
@@ -296,7 +364,6 @@ const CHARTS=[
 {id:'vitd',sys:'Vitamins',title:'Vitamin D',note:'Improved from insufficient (22) into the normal band.',unit:'ng/mL',ymin:0,ymax:60,band:[30,60],series:[{name:'Vitamin D',color:'#bf8f2e',data:SER.vitd,ref:'30–100'}]}
 ];
 
-// ── What's Ahead — projections are DERIVED from the real ≥3-point trends above, never measured values ──
 const AHEAD_CHARTS=[
 {id:'a1c',title:'HbA1c — projected',note:'Rose steadily across 3 tests; the dotted line is where it heads if that simply continues.',unit:'%',ymin:5,ymax:7,band:[4,5.6],targets:[['Diabetes ≥6.5',6.5,'#c0392b']],series:[{name:'HbA1c',color:'#c1654b',data:SER.a1c,proj:5.9}]},
 {id:'lipid',title:'Lipids — projected',note:'TG, total & LDL all climbing; dotted = estimated next value. Dashed = targets.',unit:'mg/dL',ymin:0,ymax:260,targets:[['TG 150',150,'#c0392b'],['LDL 100',100,'#c1654b']],series:[{name:'Triglycerides',color:'#c0392b',data:SER.tg,proj:200},{name:'Total',color:'#bf8f2e',data:SER.tc,proj:240},{name:'LDL',color:'#c1654b',data:SER.ldl,proj:150}]}
@@ -307,101 +374,113 @@ const RISK=[
 ['🌿 Vitamin D (a good trend!)','Vitamin D climbed <b>22 → 28 → 35</b> and is now normal — a genuinely improving trajectory. Keep the routine up and recheck in a few months. 🎉','c:vitd']
 ];
 const WATCH=[
-['moderate','Pre-diabetes / insulin-resistance picture','rising HbA1c <i>together with</i> high triglycerides is the kind of pattern that can point toward insulin resistance and pre-diabetes. Nothing is decided — this is for a doctor to check.',['Repeat HbA1c in a few months','Fasting insulin / HOMA-IR','Possibly an oral glucose tolerance test (OGTT)'],[['c:a1c','📈 HbA1c'],['tab:doctors','🩺 Doctors'],['tab:suggestions','🌿 Suggestions'],['tab:exercise','🏋️ Exercise']]],
+['moderate','Pre-diabetes / insulin-resistance picture','rising HbA1c <i>together with</i> high triglycerides and a mild fatty liver is the kind of pattern that can point toward insulin resistance and pre-diabetes. Nothing is decided — this is for a doctor to check.',['Repeat HbA1c in a few months','Fasting insulin / HOMA-IR','Possibly an oral glucose tolerance test (OGTT)'],[['c:a1c','📈 HbA1c'],['tab:doctors','🩺 Doctors'],['tab:suggestions','🌿 Suggestions'],['tab:exercise','🏋️ Exercise']]],
 ['moderate','Longer-term cholesterol / heart risk','total cholesterol, LDL and triglycerides all drifting up together is the kind of pattern doctors watch for future heart risk — worth acting on early while it is easy.',['Lipid recheck in ~3 months','Discuss ApoB / Lp(a) if your doctor advises','Home blood-pressure log'],[['c:lipid','📈 Lipids'],['tab:doctors','🩺 Doctors'],['tab:suggestions','🌿 Suggestions']]]
 ];
 
 const CASC=[
-['strong','Early metabolic pattern',[['out','Rising LDL/total','c:lipid'],['out','High triglycerides','c:lipid'],['mech','more refined carbs/sugar'],['out','HbA1c 5.7 (pre-diabetic)','c:a1c']],
- 'Your cholesterol and triglycerides are drifting up at the same time your blood sugar (HbA1c) reached the pre-diabetic band. Together that\'s an <b>early metabolic pattern</b> — and the same few habits improve all of these at once.'],
+['strong','Early metabolic pattern',[['out','Rising LDL/total','c:lipid'],['out','High triglycerides','c:lipid'],['mech','more refined carbs/sugar'],['out','HbA1c 5.7 (pre-diabetic)','c:a1c'],['out','Grade I fatty liver']],
+ 'Your cholesterol and triglycerides are drifting up at the same time your blood sugar (HbA1c) reached the pre-diabetic band, and a mild fatty liver showed on the scan. Together that\'s an <b>early metabolic pattern</b> — and the same few habits improve all of these at once.'],
 ['moderate','Vitamin D recovered',[['out','Vitamin D was 22 (low)','c:vitd'],['mech','supplement + sunlight'],['out','Now 35 (normal)','c:vitd']],
  'Your Vitamin D was below range and is now back to normal — a clear win. Keep the routine that got it there and recheck in a few months.']
 ];
 const CDO=[
-['<b>Swap some white rice for millets</b> (ragi, jowar, korralu/foxtail) — slower sugar release helps HbA1c and triglycerides.','<b>Walk briskly ~30 min most days</b> — muscles pull sugar &amp; fat from the blood (see the Exercise tab).','<b>Cut sugary drinks &amp; fried snacks</b> — these raise triglycerides fastest.','<b>Ask your doctor</b> to recheck lipids &amp; HbA1c in ~3 months. Caught early, this is usually reversible.'],
+['<b>Swap some white rice for millets</b> (ragi, jowar, korralu/foxtail) — slower sugar release helps HbA1c, triglycerides <i>and</i> the fatty liver.','<b>Walk briskly ~30 min most days</b> — muscles pull sugar &amp; fat from the blood, and activity cuts liver fat even without weight loss (see the Exercise tab).','<b>Cut sugary drinks &amp; fried snacks</b> — these raise triglycerides and liver fat fastest.','<b>Ask your doctor</b> to recheck lipids &amp; HbA1c in ~3 months. Caught this early, the whole pattern (including grade I fatty liver) is usually reversible.'],
 ['<b>Keep what\'s working</b> — your prescribed Vitamin-D routine and some daily sunlight.','<b>Recheck in a few months</b> to confirm it stays in range.']
 ];
-const HIDDEN=[['HbA1c just crossed into 5.7%','Each value alone looks "almost fine", but crossing 5.7% is the pre-diabetes threshold — the trend matters as much as the number.'],['LDL rising trend','120 → 130 → 140 — small steps, but the steady direction (up) is the signal to act on now while it\'s easy.']];
+// [title, what, suggestedTest|'', goLink|'']
+const HIDDEN=[
+['HbA1c just crossed into 5.7%','Each value alone looks "almost fine", but crossing 5.7% is the pre-diabetes threshold — the trend matters as much as the number.','Ask about repeating HbA1c in 3–6 months.','c:a1c'],
+['LDL rising trend','120 → 130 → 140 — small steps, but the steady direction (up) is the signal to act on now while it\'s easy.','Ask for a lipid recheck in ~3 months.','c:lipid'],
+['Haemoglobin "rise" is not real','14.0 → 14.2 → 14.5 looks like an upward trend, but that\'s smaller than haemoglobin\'s normal day-to-day wobble — so we call it steady, not rising. A good example of not over-reading noise.','No test needed — it\'s healthy and steady.','m:Haemoglobin']
+];
+const IMAGING=[
+['🟤 Liver ultrasound (12 Aug 2024)','Grade I (mild) fatty liver — "hepatic steatosis."','<b>What it means:</b> a little extra fat is stored in the liver, so it looks slightly brighter on the scan. <b>Grade I is the mild end — very common, and often improves</b> with the same diet &amp; activity steps that help your cholesterol and blood sugar. Jargon: <i>steatosis</i> = fat buildup. Not a diagnosis — <b>confirm with your doctor.</b>','c:lipid']
+];
+const RX=[
+['Vitamin D3 (cholecalciferol)','A supplement that supports bones and helps your body use calcium. Your reports show vitamin D improved 22 → 35 while on it. <b>Purpose only — no dose advice here; ask your doctor or pharmacist about how to take it.</b>']
+];
 
 const EX=[
-['walk','🚶 Aerobic (cardio)','What it is: brisk walking, cycling or swimming — build toward ~150 min/week.','Why it helps YOU: working muscles pull triglycerides and sugar out of your blood and make insulin work better — directly targeting your rising lipids and HbA1c.'],
+['walk','🚶 Aerobic (cardio)','What it is: brisk walking, cycling or swimming — build toward ~150 min/week.','Why it helps YOU: working muscles pull triglycerides and sugar out of your blood, make insulin work better, and burn liver fat — directly targeting your rising lipids, HbA1c and grade I fatty liver.'],
 ['strength','🏋️ Strength','What it is: 2 short sessions/week (bodyweight squats, wall push-ups, bands).','Why it helps YOU: more muscle soaks up blood sugar, easing the early metabolic pattern.'],
 ['stretch','🧘 Flexibility','What it is: gentle stretching/yoga most days, even 5–10 min.','Why it helps YOU: keeps you comfortable so you keep going, and lowers stress.'],
 ['progress','📈 Progress gently','What it is: start easy, add ~10% a week.','Why it helps YOU: steady months change the numbers; let breathing (not pain) guide you. Not medical clearance — check with your doctor.']
 ];
-const EXWHY=['Aerobic activity lowers triglycerides and helps blood sugar.','Strength work builds muscle that soaks up sugar.','Activity + small weight loss eases the whole metabolic pattern.'];
+const EXWHY=['Aerobic activity lowers triglycerides, helps blood sugar and cuts liver fat.','Strength work builds muscle that soaks up sugar.','Activity + small weight loss eases the whole metabolic pattern.'];
 const WEEK=[['Mon','Walk 30m'],['Tue','Strength'],['Wed','Walk 30m'],['Thu','Rest'],['Fri','Strength'],['Sat','Long walk'],['Sun','Stretch']];
 const SUGG=[
-['🍽️ Food','<b>Less refined carb &amp; sugar</b> helps triglycerides and HbA1c together; see the "can enjoy vs. rarely" lists below. <i>Why:</i> sugar &amp; refined carbs become triglycerides.','tab:doctors'],
-['🚶 Movement','See the Exercise tab — daily activity improves lipids, blood sugar and weight at once.','tab:exercise'],
+['🍽️ Food','<b>Less refined carb &amp; sugar</b> helps triglycerides, HbA1c and fatty liver together; see the "can enjoy vs. rarely" lists below. <i>Why:</i> sugar &amp; refined carbs become triglycerides and liver fat.','tab:doctors'],
+['🚶 Movement','See the Exercise tab — daily activity improves lipids, blood sugar, weight and liver fat at once.','tab:exercise'],
 ['💧 Hydration','Plenty of water supports overall metabolism.',null],
 ['😴 Sleep','Good sleep helps insulin work and curbs appetite.',null],
 ['📅 Keep testing','Re-testing is what makes trends visible — recheck lipids &amp; HbA1c.','c:a1c']
 ];
-// Three paired lists — "can enjoy" vs "best to have rarely" — tied to the findings, named in Rayalaseema cuisine. [title, okLabel, limLabel, okItems[name,why], limItems[name,why,swap]]
 const FOODGROUPS=[
 ['🥗 Foods','✅ Can enjoy freely','🟡 Best to have rarely / smaller portions',
   [['Vegetables & greens (gongura, palakura, beans)','fibre fills you up and barely moves blood sugar or triglycerides'],['Millets — ragi, jowar, korralu','slow-release carbs, gentler on HbA1c than white rice'],['Dal, sambar, sprouts, pulses','protein + fibre steady both sugar and lipids'],['Egg, fish, chicken or paneer — grilled/steamed (whatever you eat)','lean protein without the frying oil that lifts triglycerides']],
-  [['Large white-rice servings','spikes blood sugar (HbA1c)','smaller portion + mix in millets'],['Fried snacks (mirchi bajji, punugulu, bonda)','frying oil raises triglycerides fastest','steamed idli, plain dosa, roasted peanuts'],['Sweets (boorelu, laddu, sugary chai)','straight sugar → HbA1c & triglycerides','fruit, or a little jaggery in a smaller portion'],['Heavy coconut/oil curries','saturated fat nudges LDL up','dal, sambar, more vegetables']]],
+  [['Large white-rice servings','spikes blood sugar (HbA1c)','smaller portion + mix in millets'],['Fried snacks (mirchi bajji, punugulu, bonda)','frying oil raises triglycerides &amp; liver fat fastest','steamed idli, plain dosa, roasted peanuts'],['Sweets (boorelu, laddu, sugary chai)','straight sugar → HbA1c & triglycerides','fruit, or a little jaggery in a smaller portion'],['Heavy coconut/oil curries','saturated fat nudges LDL up','dal, sambar, more vegetables']]],
 ['🍎 Fruits','✅ Can enjoy','🟡 Enjoy in small portions',
   [['Guava (jama)','high fibre, lower sugar — good with a pre-diabetic HbA1c'],['Papaya, apple, citrus (orange, mosambi)','steady, gentle sugar release'],['Pomegranate, berries (in season)','antioxidants with only modest sugar']],
   [['Mango, banana, chikoo, grapes','naturally high sugar — fine in small portions, not bowls','one small piece; whole fruit, never juice'],['Dried fruit & packaged fruit juice','concentrated sugar, spikes HbA1c','whole fresh fruit instead']]],
 ['🥤 Drinks','✅ Can enjoy','🟡 Best to have rarely',
   [['Water','best for metabolism, zero sugar'],['Unsweetened tea / coffee','no added sugar'],['Buttermilk (majjiga)','light, aids digestion, no added sugar']],
-  [['Sugary drinks, sodas, sweetened juices','liquid sugar lifts HbA1c & triglycerides fast','water, majjiga, or unsweetened tea'],['Alcohol','raises triglycerides and stresses the liver','discuss safe limits with your doctor']]]
+  [['Sugary drinks, sodas, sweetened juices','liquid sugar lifts HbA1c & triglycerides fast','water, majjiga, or unsweetened tea'],['Alcohol','raises triglycerides and stresses the liver (you have a mild fatty liver)','discuss safe limits with your doctor']]]
 ];
 
 const DOCS=[
-['🩸 Physician / Diabetologist','Rising lipids + pre-diabetic HbA1c (one metabolic picture).',['Is this lifestyle for now, or do I need further tests?','What lipid &amp; HbA1c targets fit me?'],['Agree a diet + activity plan.','Recheck lipids &amp; HbA1c in 3 months.'],'c:a1c'],
+['🩸 Physician / Diabetologist','Rising lipids + pre-diabetic HbA1c + mild fatty liver (one metabolic picture).',['Is this lifestyle for now, or do I need further tests?','What lipid &amp; HbA1c targets fit me?','Does the grade I fatty liver need any follow-up?'],['Agree a diet + activity plan.','Recheck lipids &amp; HbA1c in 3 months.'],'c:a1c'],
 ['🥗 Dietitian (optional)','Help tailoring South-Indian meals to the numbers.',['How do I keep my usual food but lower the carb load?'],['Build a millet-friendly weekly plan.'],'c:lipid']
 ];
-// Body coverage + suggested tests. status: ok/part/no (from real data only). go links checked tiles to findings.
-// Tests: data-driven (tied to findings) rank Important; general screening fills Optional. Age/sex-specific gated by PROFILE.
 const PROFILE={ageKnown:true,sexKnown:true,age:34,sex:'male'};
-const COVERAGE=[
-{sys:'Blood sugar / metabolic',icon:'🩸',status:'ok',go:'c:a1c',
- important:[['Fasting insulin / HOMA-IR','quantifies the insulin resistance behind a rising HbA1c'],['Repeat HbA1c in 3–6 months','confirms whether the upward trend continues']],
- optional:[['Oral glucose tolerance test (OGTT)','a fuller picture of how your body handles sugar — only if your doctor wants it']]},
-{sys:'Cholesterol / heart-risk bloods',icon:'🫀',status:'ok',go:'c:lipid',
- important:[['Lipid recheck in ~3 months','shows whether diet & activity are bringing the numbers down']],
- optional:[['ApoB / Lp(a)','finer detail on heart risk — discuss if your doctor thinks it useful']]},
-{sys:'Thyroid',icon:'🦋',status:'ok',go:'m:TSH',
- important:[],
- optional:[['Anti-TPO antibodies','checks for autoimmune thyroid — only if your doctor suspects it (your TSH is normal)']]},
-{sys:'Liver',icon:'🟤',status:'ok',go:'m:ALT (SGPT)',
- important:[],
- optional:[['Liver ultrasound / FibroScan','looks at liver fat/stiffness — discuss only if risk factors appear (your ALT is normal)']]},
-{sys:'Blood count (hematology)',icon:'🩸',status:'ok',go:'m:Haemoglobin',
- important:[],
- optional:[['Repeat CBC at next checkup','routine — your haemoglobin is normal']]},
-{sys:'Vitamins / inflammation',icon:'🌿',status:'ok',go:'c:vitd',
- important:[],
- optional:[['Vitamin B12','commonly checked alongside vitamin D'],['hs-CRP','a general inflammation marker — discuss']]},
-{sys:'Heart (ECG / Echo / BP)',icon:'❤️',status:'part',go:'c:lipid',
- important:[['Blood-pressure check','central to heart risk and never recorded in your reports']],
- optional:[['Resting ECG','a baseline of your heart rhythm']]},
-{sys:'Kidney',icon:'🫘',status:'no',
- important:[['Serum creatinine + eGFR','basic kidney function — it was not in your panel']],
- optional:[['Urine routine / ACR','checks for protein leaking into the urine']]},
-{sys:'Eyes',icon:'👁️',status:'no',
- important:[['Vision + retina (fundus) eye exam','general screening — and rising blood sugar can affect the eyes']],
- optional:[]},
-{sys:'Bones / joints',icon:'🦴',status:'no',
- important:[],
- optional:[['Bone-density (DEXA) scan','usually considered later in life — a note for the future; your vitamin D is already tracked']]},
-{sys:'Abdominal organs (imaging)',icon:'🩻',status:'no',
- important:[],
- optional:[['Abdominal ultrasound','a general look at liver/gallbladder/kidneys — only if symptoms or your doctor advises']]}
+// Comprehensive whole-body coverage — grouped; shows NOT-assessed systems too. status: ok/part/no (real data only).
+const COV_GROUPS=[
+['From your bloodwork',[
+ {sys:'Blood sugar / metabolic',status:'ok',go:'c:a1c',important:[['Fasting insulin / HOMA-IR','quantifies the insulin resistance behind a rising HbA1c'],['Repeat HbA1c in 3–6 months','confirms whether the upward trend continues']],optional:[['Oral glucose tolerance test (OGTT)','a fuller picture of how your body handles sugar — only if your doctor wants it']]},
+ {sys:'Cholesterol / heart-risk',status:'ok',go:'c:lipid',important:[['Lipid recheck in ~3 months','shows whether diet & activity are bringing the numbers down']],optional:[['ApoB / Lp(a)','finer detail on heart risk — discuss if your doctor thinks it useful']]},
+ {sys:'Thyroid',status:'ok',go:'m:TSH',important:[],optional:[['Anti-TPO antibodies','checks for autoimmune thyroid — only if your doctor suspects it (your TSH is normal)']]},
+ {sys:'Liver',status:'ok',go:'m:ALT (SGPT)',important:[],optional:[['FIB-4 score / FibroScan','grades any liver scarring behind the mild fatty liver — discuss given the ultrasound finding']]},
+ {sys:'Kidney & urinary',status:'no',important:[['Serum creatinine + eGFR','basic kidney function — it was not in your panel']],optional:[['Urine routine / ACR','checks for protein leaking into the urine']]},
+ {sys:'Blood count (anemia)',status:'ok',go:'m:Haemoglobin',important:[],optional:[['Repeat CBC at next checkup','routine — your haemoglobin is normal']]},
+ {sys:'Iron & vitamins',status:'ok',go:'c:vitd',important:[],optional:[['Ferritin / iron studies','baseline iron stores, commonly checked with a CBC']]},
+ {sys:'Inflammation / immune',status:'no',important:[],optional:[['hs-CRP','a general inflammation marker — discuss']]},
+ {sys:'Electrolytes & minerals',status:'no',important:[],optional:[['Sodium / potassium / calcium','usually bundled in a metabolic panel — not in yours yet']]},
+ {sys:'Hormones / reproductive',status:'no',important:[],optional:[['Discuss only if symptoms','hormone tests are symptom-driven, not routine']]}
+]],
+['Organs &amp; the rest of the body',[
+ {sys:'Heart & circulation',status:'part',go:'c:lipid',important:[['Blood-pressure check','central to heart risk and never recorded in your reports']],optional:[['Resting ECG','a baseline of your heart rhythm']]},
+ {sys:'Lungs / respiratory',status:'no',important:[],optional:[['Only if symptoms','no routine lung screen for non-smokers']]},
+ {sys:'Brain & nervous system',status:'no',important:[],optional:[['Symptom-driven only','BP & sugar control protect the brain; no routine scan']]},
+ {sys:'Digestive / gut',status:'no',important:[],optional:[['Discuss if symptoms','e.g. acidity, H. pylori — symptom-led']]},
+ {sys:'Abdominal organs (imaging)',status:'ok',go:'c:lipid',important:[],optional:[['Repeat ultrasound later','to see if the mild fatty liver improves with lifestyle']]},
+ {sys:'Bones / joints',status:'no',important:[],optional:[['Bone-density (DEXA) scan','usually considered later in life — a note for the future; your vitamin D is tracked']]},
+ {sys:'Eyes / vision',status:'no',important:[['Vision + retina (fundus) exam','general screening — and rising blood sugar can affect the eyes']],optional:[]},
+ {sys:'Ears / hearing',status:'no',important:[],optional:[['Hearing check','routine, especially with age']]},
+ {sys:'Skin',status:'no',important:[],optional:[['See a doctor for new/changing moles','no routine full-body screen advised']]},
+ {sys:'Dental / oral',status:'no',important:[],optional:[['Routine dental check-up','oral health is linked to inflammation & heart health']]},
+ {sys:'Mental / emotional wellbeing',status:'no',important:[],optional:[['A quick mood/stress check-in','talking to a professional helps — ask your doctor; no diagnosis here']]},
+ {sys:'Body measurements (BMI/BP)',status:'no',important:[['Weight, waist & blood pressure','simple, central to metabolic & heart risk — not recorded yet']],optional:[]}
+]]
 ];
+const COVERAGE=COV_GROUPS.flatMap(g=>g[1]);
 const STATUS={ok:['ok','✅ checked'],part:['part','🟡 partly'],no:['no','⭕ not assessed']};
 const SCREEN_NOTE=PROFILE.ageKnown&&PROFILE.sexKnown
- ?'<h3 style="font-size:15px">🗓️ General screening for your age &amp; sex <span style="font-weight:400;color:var(--muted);font-size:12px">— on file: '+PROFILE.age+', '+esc(PROFILE.sex)+'</span></h3><p class="note">Because your age and sex are on file, here is the general picture — <b>confirm with your doctor</b>: around 34, the focus is usually blood pressure, blood sugar, cholesterol and weight (above). <b>Colorectal screening</b> typically begins about age 45, and <b>prostate (PSA)</b> discussion around 50 — notes for later. Female-specific screenings (Pap smear, mammogram) do not apply to you. <i>These are general suggestions, not a personalised plan.</i></p>'
+ ?'<h3 style="font-size:15px">🗓️ General screening for your age &amp; sex <span style="font-weight:400;color:var(--muted);font-size:12px">— on file: '+PROFILE.age+', '+esc(PROFILE.sex)+'</span></h3><p class="note">Because your age and sex are on file, here is the general picture — <b>confirm with your doctor</b>: around 34, the focus is usually blood pressure, blood sugar, cholesterol and weight (above). <b>Colorectal screening</b> typically begins about age 45, and <b>prostate (PSA)</b> discussion around 50 — notes for later. Female-specific screenings (Pap smear, mammogram) do not apply to you. Ages vary by country. <i>These are general suggestions, not a personalised plan.</i></p>'
  :'<h3 style="font-size:15px">🗓️ General screening</h3><p class="note">Some screenings depend on age and sex. Your age/sex are not on file, so <b>ask your doctor which screenings apply to you</b> — we never assume them.</p>';
-const CHECK=[['Fasting insulin / HOMA-IR','Quantify the suspected insulin resistance.'],['Recheck lipids in 3 months','Track whether lifestyle is working.'],['Repeat HbA1c','Confirm it isn\'t creeping further.'],['Start a home BP log','Vitals were missing.']];
+// [text, desc, autoDone, resultText]
+const CHECK=[
+['Vitamin D recheck','Confirm it stayed in range.',true,'✓ done 12 Aug 2024 — result 35 ng/mL (from blood panel)'],
+['Liver ultrasound','Check for fatty liver / other causes.',true,'✓ done 12 Aug 2024 — grade I fatty liver (from ultrasound report)'],
+['Fasting insulin / HOMA-IR','Quantify the suspected insulin resistance.',false,''],
+['Recheck lipids in 3 months','Track whether lifestyle is working.',false,''],
+['Repeat HbA1c','Confirm it isn\'t creeping further.',false,''],
+['Start a home BP log','Vitals were missing.',false,'']
+];
+const QLIST=['My cholesterol & HbA1c are rising together — lifestyle for now, or test further?','What lipid and HbA1c targets are right for me?','Does the grade I fatty liver need any follow-up or a FibroScan?','My B12 reads ">2000" — is the supplement dose fine to continue?','Which screenings apply at my age (34)?'];
 const RESOLVED=[['Identity','Rahul (fictional) — confirmed by user.'],['Location & diet','Anantapur, India; South-Indian (Rayalaseema) food — confirmed by user.']];
 const UNCLEAR=[['(none)','Nothing was left unverified in this example.']];
 
-const PILL={high:['s-high','▲ HIGH'],low:['s-low','▼ LOW'],norm:['s-norm','● NORMAL'],watch:['s-watch','● WATCH']};
+const PILL={high:['s-high','▲ HIGH'],low:['s-low','▼ LOW'],norm:['s-norm','● NORMAL'],watch:['s-watch','● WATCH'],cens:['s-cens','≁ ABOVE LIMIT']};
 const DOT={high:'d-high',low:'d-low',norm:'d-norm',watch:'d-watch'};
 const ARR={up:['a-up','▲'],down:['a-down','▼'],flat:['a-flat','→'],fluct:['a-fluct','↕'],na:['a-flat','·']};
 const CHART_LABEL={lipid:'📈 Lipids',a1c:'📈 HbA1c',vitd:'📈 Vitamin D'};
@@ -415,6 +494,23 @@ function relRow(items){return '<div class="relchips"><span class="rl">Related:</
 const REL={overview:[['tab:trends','📈 Trends'],['tab:ahead','🔮 What\'s Ahead'],['tab:numbers','🔢 My Numbers'],['tab:map','🧭 Full Map'],['tab:doctors','🩺 Doctors']],trends:[['tab:ahead','🔮 What\'s Ahead'],['tab:numbers','🔢 My Numbers'],['tab:map','🧭 Full Map'],['tab:exercise','🏋️ Exercise']],ahead:[['tab:trends','📈 Trends'],['tab:numbers','🔢 My Numbers'],['tab:doctors','🩺 Doctors'],['tab:suggestions','🌿 Suggestions'],['tab:exercise','🏋️ Exercise']],numbers:[['tab:trends','📈 Trends'],['tab:map','🧭 Full Map']],map:[['tab:trends','📈 Trends'],['tab:exercise','🏋️ Exercise'],['tab:suggestions','🌿 Suggestions'],['tab:doctors','🩺 Doctors']],exercise:[['tab:suggestions','🌿 Suggestions'],['c:lipid','📈 Lipids'],['c:a1c','📈 HbA1c']],suggestions:[['tab:exercise','🏋️ Exercise'],['tab:trends','📈 Trends']],doctors:[['tab:trends','📈 Trends'],['tab:ahead','🔮 What\'s Ahead'],['tab:numbers','🔢 My Numbers']],unclear:[['tab:numbers','🔢 My Numbers'],['tab:trends','📈 Trends']]};
 function injectRel(){Object.keys(REL).forEach(id=>{const sec=document.querySelector('#tab-'+id+' .block');if(!sec||sec.querySelector(':scope > .relrow'))return;const d=document.createElement('div');d.className='relrow';d.innerHTML='<span class="rl">Related tabs:</span>'+REL[id].map(([g,l])=>'<button class="golink" data-go="'+esc(g)+'">'+esc(l)+'</button>').join('');sec.appendChild(d);});}
 
+// ── comfort bar + read-aloud (offline) ──
+function toggleBody(cls,btn){const on=document.body.classList.toggle(cls);const b=$(btn);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);}
+$('cb-big').onclick=()=>toggleBody('big','cb-big');
+$('cb-contrast').onclick=()=>toggleBody('contrast','cb-contrast');
+$('cb-motion').onclick=()=>toggleBody('reduce','cb-motion');
+let speaking=false;
+function setRA(){const b=$('cb-read');b.textContent=speaking?'⏹ Stop reading':'🔊 Read this tab';b.classList.toggle('on',speaking);b.setAttribute('aria-pressed',speaking);}
+$('cb-read').onclick=()=>{
+  if(!('speechSynthesis' in window)){$('cb-read').textContent='🔊 (read-aloud not available)';return;}
+  if(speaking){speechSynthesis.cancel();speaking=false;setRA();return;}
+  const tab=document.querySelector('.tab.active');if(!tab)return;
+  const text=(tab.innerText||'').replace(/\s+/g,' ').trim().slice(0,3500);
+  const u=new SpeechSynthesisUtterance(text);u.rate=1;u.onend=()=>{speaking=false;setRA();};
+  speechSynthesis.cancel();speechSynthesis.speak(u);speaking=true;setRA();
+};
+
+// ── charts ──
 const W=540,H=280,M={l:46,r:16,t:14,b:30},PW=W-M.l-M.r,PH=H-M.t-M.b;
 function xAt(i,n){return M.l+(n<=1?PW/2:i/(n-1)*PW);}function yAt(v,mn,mx){return M.t+(1-(v-mn)/(mx-mn))*PH;}
 function refTxt(ref,i){if(!ref)return '';const r=Array.isArray(ref)?ref[i]:ref;return r?' · ref '+r:'';}
@@ -437,16 +533,49 @@ function renderCharts(){const sysset=[...new Set(CHARTS.map(c=>c.sys))];
 const tip=$('ctip');
 function bindTips(root){root.querySelectorAll('[data-tip]').forEach(el=>{const show=e=>{tip.textContent=el.getAttribute('data-tip');tip.style.opacity='1';move(e);};const move=e=>{const t=(e.touches?e.touches[0]:e);tip.style.left=Math.min(innerWidth-tip.offsetWidth-8,(t.clientX||0)+12)+'px';tip.style.top=((t.clientY||0)+12)+'px';};el.addEventListener('mouseenter',show);el.addEventListener('mousemove',move);el.addEventListener('mouseleave',()=>tip.style.opacity='0');el.addEventListener('focus',show);el.addEventListener('blur',()=>tip.style.opacity='0');el.addEventListener('click',show);});}
 
+// ── result-on-a-bar (single value) ──
+function resultBar(name,val,status){
+  const bw=340,bh=30,pad=8,trkY=12,trkH=8;
+  const verdict={high:'A little high',low:'A little low',norm:'In range',watch:'Worth watching',cens:'Above the test’s limit'}[status]||'';
+  if(status==='cens'){ // censored e.g. >2000
+    let s='<svg viewBox="0 0 '+bw+' '+bh+'" role="img" aria-label="'+esc(name+' '+val)+', above the measurable limit"><rect x="'+pad+'" y="'+trkY+'" width="'+(bw-2*pad)+'" height="'+trkH+'" rx="4" fill="#e7e2d6"/>';
+    s+='<rect x="'+pad+'" y="'+trkY+'" width="'+((bw-2*pad)*0.5)+'" height="'+trkH+'" rx="4" fill="rgba(91,138,114,.30)"/>';
+    s+='<text x="'+pad+'" y="'+(trkY-2)+'" font-size="9" fill="#76746c">normal 200–900</text>';
+    s+='<polygon points="'+(bw-pad-12)+','+(trkY+trkH/2-7)+' '+(bw-pad)+','+(trkY+trkH/2)+' '+(bw-pad-12)+','+(trkY+trkH/2+7)+'" fill="#4a7a96"/>';
+    s+='<text x="'+(bw-pad)+'" y="'+(bh-2)+'" text-anchor="end" font-size="10" fill="#2f5667">&gt;2000 — beyond what the test measures</text></svg>';
+    return '<div class="rbar">'+s+'</div>';
+  }
+  const r=RBAR[name];if(!r)return '';
+  const[mn,mx,lo,hi,v]=r,sx=x=>pad+((x-mn)/(mx-mn))*(bw-2*pad),cl=x=>Math.max(pad,Math.min(bw-pad,sx(x)));
+  const col=status==='norm'?'#2e7d54':(status==='low'?'#cf8a1e':'#c0392b');
+  let s='<svg viewBox="0 0 '+bw+' '+bh+'" role="img" aria-label="'+esc(name+': '+val+', '+verdict)+'">';
+  s+='<rect x="'+pad+'" y="'+trkY+'" width="'+(bw-2*pad)+'" height="'+trkH+'" rx="4" fill="#e7e2d6"/>';
+  s+='<rect x="'+cl(lo).toFixed(1)+'" y="'+trkY+'" width="'+(cl(hi)-cl(lo)).toFixed(1)+'" height="'+trkH+'" rx="4" fill="rgba(91,138,114,.32)"/>';
+  s+='<text x="'+cl(lo).toFixed(1)+'" y="'+(trkY-2)+'" font-size="9" fill="#76746c">normal</text>';
+  s+='<circle cx="'+cl(v).toFixed(1)+'" cy="'+(trkY+trkH/2).toFixed(1)+'" r="6" fill="'+col+'" stroke="#fff" stroke-width="2"/>';
+  s+='<text x="'+cl(v).toFixed(1)+'" y="'+(bh-2)+'" text-anchor="middle" font-size="10" fill="'+col+'" font-weight="700">'+esc(val)+' · '+esc(verdict)+'</text></svg>';
+  return '<div class="rbar">'+s+'</div>';
+}
+
 function renderGlance(){const mk=r=>r.map(x=>'<li'+(x[4]?' class="link" tabindex="0" role="button" data-go="'+esc(x[4])+'"':'')+'><span class="dot '+DOT[x[2]]+'"></span><span class="name">'+x[0]+'<div class="src">'+x[3]+'</div></span><span class="v">'+x[1]+'</span></li>').join('');$('glanceA').innerHTML=mk(GLANCE_A);$('glanceB').innerHTML=mk(GLANCE_B);}
-let numStatus='all',numSearch='';
-function renderNumbers(){let html='';SYS.forEach(([name,rows])=>{const fr=rows.filter(r=>{if(numSearch&&!r[0].toLowerCase().includes(numSearch))return false;if(numStatus==='all')return true;if(numStatus==='out')return r[4]==='high'||r[4]==='low';return r[4]===numStatus;});if(!fr.length)return;
+function renderScorecard(){const ms=[];SYS.forEach(([,rows])=>rows.forEach(r=>ms.push(r)));
+  const inR=ms.filter(r=>r[4]==='norm').length,total=ms.length;
+  const gl={norm:['sc-ok','●'],high:['sc-hi','▲'],low:['sc-lo','▼'],watch:['sc-cens','◆'],cens:['sc-cens','≁']};
+  const dots=ms.map(r=>{const g=gl[r[4]]||gl.norm;return '<span class="scg '+g[0]+'" title="'+esc(r[0])+'">'+g[1]+'</span>';}).join('');
+  $('scorecard').innerHTML='<div class="scwrap" aria-hidden="true">'+dots+'</div><p class="note"><b>'+inR+' of '+total+'</b> markers are in their normal range; <b>'+(total-inR)+'</b> are outside (shown below). Legend: <span class="scg sc-ok">●</span> in range · <span class="scg sc-hi">▲</span> high · <span class="scg sc-cens">≁</span> above the test’s limit. <i>This is a count of your results, not a risk score.</i></p>';}
+function renderImaging(){$('imaging').innerHTML=IMAGING.map(im=>'<div style="margin:6px 0"><b>'+esc(im[0])+'</b> — '+esc(im[1])+'<div class="note" style="margin-top:3px">'+im[2]+(im[3]?' <button class="golink" data-go="'+esc(im[3])+'">related ↗</button>':'')+'</div></div>').join('');}
+function renderRx(){$('rx').innerHTML=RX.map(x=>'<div style="margin:6px 0"><b>'+esc(x[0])+'</b><div class="note" style="margin-top:3px">'+x[1]+'</div></div>').join('');}
+function renderOverview(){renderGlance();renderScorecard();renderImaging();renderRx();}
+
+let numStatus='all',numSearch='';const MK={};
+function renderNumbers(){let html='';SYS.forEach(([name,rows])=>{const fr=rows.filter(r=>{if(numSearch&&!r[0].toLowerCase().includes(numSearch))return false;if(numStatus==='all')return true;if(numStatus==='out')return r[4]==='high'||r[4]==='low'||r[4]==='cens';return r[4]===numStatus;});if(!fr.length)return;
     html+='<div class="syshead">'+name+'</div><table class="tbl"><colgroup><col style="width:32%"><col style="width:11%"><col style="width:11%"><col style="width:18%"><col style="width:16%"><col style="width:12%"></colgroup><tr><th>Marker</th><th style="text-align:right">Latest</th><th>Unit</th><th>Reference</th><th>Status</th><th>Trend</th></tr>';
-    fr.forEach(r=>{const [p,pl]=PILL[r[4]],[ac,ag]=ARR[r[5]],ex=EXPL[r[0]],ch=r[6];html+='<tr><td><button class="info" data-ex="'+esc(ex||'')+'">i</button><button class="mname'+(ch?' link':'')+'"'+(ch?' data-go="c:'+ch+'"':'')+'>'+esc(r[0])+'</button></td><td class="num">'+esc(r[1])+'</td><td>'+esc(r[2])+'</td><td>'+esc(r[3])+'</td><td><span class="pilltag '+p+'">'+pl+'</span></td><td><span class="arrow '+ac+'">'+ag+'</span></td></tr>';});html+='</table>';});
+    fr.forEach(r=>{MK[r[0]]=r;const [p,pl]=PILL[r[4]],[ac,ag]=ARR[r[5]],ch=r[6];const varb=(r[0]==='Haemoglobin')?'<span class="varbadge" title="within normal day-to-day variation">≈ within variation</span>':'';html+='<tr><td><button class="info" data-mk="'+esc(r[0])+'" aria-label="Explain '+esc(r[0])+'">i</button><button class="mname'+(ch?' link':'')+'"'+(ch?' data-go="c:'+ch+'"':'')+'>'+esc(r[0])+'</button></td><td class="num">'+esc(r[1])+'</td><td>'+esc(r[2])+'</td><td>'+esc(r[3])+'</td><td><span class="pilltag '+p+'">'+pl+'</span></td><td><span class="arrow '+ac+'">'+ag+'</span>'+varb+'</td></tr>';});html+='</table>';});
   if(!html)html='<p class="lead">No markers match this filter.</p>';$('numbers').innerHTML=html;
-  $('numbers').querySelectorAll('.info').forEach(b=>b.onclick=()=>{const tr=b.closest('tr'),nx=tr.nextElementSibling;if(nx&&nx.classList.contains('expl')){nx.remove();return;}const e=document.createElement('tr');e.className='expl';e.innerHTML='<td colspan="6">'+(b.dataset.ex||'No explanation.')+'</td>';tr.after(e);});}
+  $('numbers').querySelectorAll('.info').forEach(b=>b.onclick=()=>{const tr=b.closest('tr'),nx=tr.nextElementSibling;if(nx&&nx.classList.contains('expl')){nx.remove();return;}const r=MK[b.dataset.mk];const gist={high:'A little high',low:'A little low',norm:'In your normal range',watch:'Worth watching',cens:'Above the test’s limit'}[r[4]]||'';const day=DAY[r[0]]?'<div class="dayline">📅 <b>For your day:</b> '+esc(DAY[r[0]])+'</div>':'';const e=document.createElement('tr');e.className='expl';e.innerHTML='<td colspan="6"><div class="expl-in">'+(gist?'<span class="gist">'+esc(gist)+'</span>':'')+resultBar(r[0],r[1],r[4])+'<p>'+esc(EXPL[r[0]]||'No explanation.')+'</p>'+day+'</div></td>';tr.after(e);});}
 function renderMap(){$('cascades').innerHTML=CASC.map(([conf,title,nodes,nar],idx)=>{const cc={strong:'c-strong',moderate:'c-mod',speculative:'c-spec'}[conf];const chain=nodes.map((nd,i)=>(i?'<span class="sep">→</span>':'')+'<span class="node '+nd[0]+(nd[2]?' link" tabindex="0" role="button" data-go="'+esc(nd[2])+'"':'"')+'>'+esc(nd[1])+'</span>').join('');const dolist=(CDO[idx]||[]).map(b=>'<li>'+b+'</li>').join('');const charts=[...new Set(nodes.filter(nd=>nd[2]&&nd[2].slice(0,2)==='c:').map(nd=>nd[2]))];const rel=charts.map(t=>[t,CHART_LABEL[t.slice(2)]||'📈 chart']).concat([['tab:exercise','🏋️ Exercise'],['tab:suggestions','🌿 Suggestions']]);
     return '<div class="cascade"><span class="conf '+cc+'">'+conf+'</span><b>'+esc(title)+'</b><div class="chain">'+chain+'</div><p class="cnar"><b>What’s happening to you:</b> '+nar+'</p>'+(dolist?'<div class="cdo"><b>✅ What you can do about it:</b><ul class="dolist">'+dolist+'</ul></div>':'')+relRow(rel)+'</div>';}).join('');
-  $('hidden').innerHTML=HIDDEN.map(h=>'<div class="card"><h3 style="font-size:15px">'+esc(h[0])+'</h3><p class="note">'+esc(h[1])+'</p></div>').join('');}
+  $('hidden').innerHTML=HIDDEN.map(h=>'<div class="card"><h3 style="font-size:15px">'+esc(h[0])+'</h3><p class="note">'+esc(h[1])+'</p>'+(h[2]?'<p class="note" style="margin-top:6px"><b>🔬 Test to discuss:</b> '+esc(h[2])+(h[3]?' <button class="golink" data-go="'+esc(h[3])+'">see it ↗</button>':'')+'</p>':'')+'</div>').join('');}
 function pBar(label,cur,pct,cls){return '<div class="prog"><div class="top"><span>'+label+'</span><span><b>'+cur+'</b></span></div><div class="bar"><span class="'+cls+'" data-w="'+pct+'"></span></div></div>';}
 function renderProgress(){$('prog-lipid').innerHTML=pBar('Triglycerides → <150','180',Math.min(100,150/180*100),'fill-bad')+pBar('LDL → <100','140',Math.min(100,100/140*100),'fill-warn')+pBar('Total → <200','225',Math.min(100,200/225*100),'fill-warn');
   $('prog-meta').innerHTML=pBar('HbA1c → <5.7%','5.7%',Math.min(100,5.7/5.7*100),'fill-warn')+pBar('Vitamin D → ≥30','35 ✓',100,'fill-good');
@@ -472,30 +601,36 @@ function renderAhead(){
   $('riskTraj').innerHTML=RISK.map(r=>'<div class="card"><h3 style="font-size:15px">'+r[0]+'</h3><p class="note">'+r[1]+(r[2]?' <button class="golink" data-go="'+esc(r[2])+'">see chart ↗</button>':'')+'</p></div>').join('');
   $('watch').innerHTML=WATCH.map(w=>{const cc={strong:'c-strong',moderate:'c-mod',speculative:'c-spec'}[w[0]];const tests=w[3].map(t=>'<li>'+esc(t)+'</li>').join('');
     return '<div class="cascade"><span class="conf '+cc+'">'+w[0]+'</span><b>'+esc(w[1])+'</b><p class="cnar"><b>What this points toward:</b> '+w[2]+'</p><div class="cdo"><b>🔬 Tests a doctor uses to check it:</b><ul class="dolist">'+tests+'</ul></div>'+relRow(w[4])+'</div>';}).join('');}
-function renderChecklist(){$('checklist').innerHTML=CHECK.map(c=>'<label class="check"><input type="checkbox"><div><div class="ct">'+esc(c[0])+'</div><div class="cd">'+esc(c[1])+'</div></div></label>').join('');$('ck-total').textContent=CHECK.length;$('checklist').querySelectorAll('input').forEach(i=>i.onchange=updCheck);updCheck();}
+function renderChecklist(){$('checklist').innerHTML=CHECK.map((c,i)=>'<label class="check'+(c[2]?' done':'')+'"><input type="checkbox" data-i="'+i+'"'+(c[2]?' checked':'')+'><div><div class="ct">'+esc(c[0])+'</div><div class="cd">'+esc(c[1])+'</div>'+(c[3]?'<div class="res">'+esc(c[3])+'</div>':'')+'</div></label>').join('');$('ck-total').textContent=CHECK.length;$('checklist').querySelectorAll('input').forEach(i=>i.onchange=updCheck);updCheck();}
 function updCheck(){const ins=[...$('checklist').querySelectorAll('input')],d=ins.filter(i=>i.checked).length,p=Math.round(d/ins.length*100);ins.forEach(i=>i.closest('.check').classList.toggle('done',i.checked));$('ck-count').textContent=d;$('ck-pct').textContent=p+'%';$('ck-bar').style.width=p+'%';}
 function renderSugg(){$('suggestions').innerHTML=SUGG.map(s=>'<div class="card"><h3>'+s[0]+'</h3><p class="note">'+s[1]+(s[2]?' <button class="golink" data-go="'+esc(s[2])+'">see it ↗</button>':'')+'</p></div>').join('');
   $('food').innerHTML=FOODGROUPS.map(g=>{const ok=g[3].map(x=>'<li><b>'+esc(x[0])+'</b><span class="why">'+esc(x[1])+'</span></li>').join('');
     const lim=g[4].map(x=>'<li><b>'+esc(x[0])+'</b><span class="why">'+esc(x[1])+'</span><span class="swap">↦ swap: <b>'+esc(x[2])+'</b></span></li>').join('');
-    return '<div class="foodgroup"><h3>'+g[0]+'</h3><div class="foodcols"><div class="foodcol ok"><h4>'+esc(g[1])+'</h4><ul>'+ok+'</ul></div><div class="foodcol lim"><h4>'+esc(g[2])+'</h4><ul>'+lim+'</ul></div></div></div>';}).join('');}
+    return '<div class="foodgroup"><h3>'+g[0]+'</h3><div class="foodcols"><div class="foodcol ok"><h4>'+esc(g[1])+'</h4><ul>'+ok+'</ul></div><div class="foodcol lim"><h4>'+esc(g[2])+'</h4><ul>'+lim+'</ul></div></div></div>';}).join('');
+  renderHabits();}
+const HAB=[];let habWired=false;
+function renderHabits(){const list=$('habList');if(!list)return;list.innerHTML=HAB.map(h=>'<li>When <b>'+esc(h.c)+'</b>, I will <b>'+esc(h.a)+'</b>.</li>').join('');$('habNote').style.display=HAB.length?'block':'none';
+  if(habWired)return;habWired=true;$('habAdd').onclick=()=>{const c=$('hcue').value.trim(),a=$('hact').value.trim();if(!c||!a)return;HAB.push({c,a});$('hcue').value='';$('hact').value='';renderHabits();};}
 function exFig(kind){const c='#5b8a72';if(kind==='walk')return '<svg class="exfig" viewBox="0 0 200 120"><circle cx="100" cy="28" r="12" fill="'+c+'"/><line x1="100" y1="40" x2="100" y2="72" stroke="'+c+'" stroke-width="6"/><line x1="100" y1="50" x2="118" y2="64" stroke="'+c+'" stroke-width="6"/><line x1="100" y1="50" x2="84" y2="62" stroke="'+c+'" stroke-width="6"/><line x1="100" y1="72" x2="116" y2="98" stroke="'+c+'" stroke-width="6"/><line x1="100" y1="72" x2="84" y2="98" stroke="'+c+'" stroke-width="6"/></svg>';
   if(kind==='strength')return '<svg class="exfig" viewBox="0 0 200 120"><circle cx="100" cy="30" r="12" fill="'+c+'"/><line x1="100" y1="42" x2="100" y2="74" stroke="'+c+'" stroke-width="6"/><line x1="70" y1="54" x2="130" y2="54" stroke="'+c+'" stroke-width="6"/><circle cx="64" cy="54" r="9" fill="'+c+'"/><circle cx="136" cy="54" r="9" fill="'+c+'"/><line x1="100" y1="74" x2="116" y2="100" stroke="'+c+'" stroke-width="6"/><line x1="100" y1="74" x2="84" y2="100" stroke="'+c+'" stroke-width="6"/></svg>';
   if(kind==='stretch')return '<svg class="exfig" viewBox="0 0 200 120"><circle cx="86" cy="30" r="12" fill="'+c+'"/><path d="M86 42 Q86 70 120 74" fill="none" stroke="'+c+'" stroke-width="6"/><line x1="86" y1="50" x2="120" y2="60" stroke="'+c+'" stroke-width="6"/><line x1="120" y1="74" x2="150" y2="74" stroke="'+c+'" stroke-width="6"/></svg>';
   return '<svg class="exfig" viewBox="0 0 200 120"><path d="M30 86 Q100 22 170 86" fill="none" stroke="'+c+'" stroke-width="6"/><circle cx="100" cy="52" r="10" fill="'+c+'"/></svg>';}
 function renderExercise(){$('exgrid').innerHTML=EX.map(e=>'<div class="card">'+exFig(e[0])+'<h3>'+e[1]+'</h3><p class="note">'+esc(e[2])+'</p><div class="exwhy2">'+esc(e[3])+'</div></div>').join('');$('week').innerHTML=WEEK.map(d=>'<div class="day"><b>'+d[0]+'</b>'+d[1]+'</div>').join('');$('exwhy').innerHTML=EXWHY.map(w=>'<li>'+esc(w)+'</li>').join('');}
-function renderDoctors(){$('doctors').innerHTML=DOCS.map(d=>'<div class="doc"><h3>'+d[0]+(d[4]?' <button class="golink" data-go="'+esc(d[4])+'">See the data ↗</button>':'')+'</h3><p class="note">'+esc(d[1])+'</p><div class="two"><div><h4>What to ask</h4><ul>'+d[2].map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div><div><h4>What to do</h4><ul>'+d[3].map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></div></div>').join('');}
+function renderDoctors(){$('doctors').innerHTML=DOCS.map(d=>'<div class="doc"><h3>'+d[0]+(d[4]?' <button class="golink" data-go="'+esc(d[4])+'">See the data ↗</button>':'')+'</h3><p class="note">'+esc(d[1])+'</p><div class="two"><div><h4>What to ask</h4><ul>'+d[2].map(x=>'<li>'+x+'</li>').join('')+'</ul></div><div><h4>What to do</h4><ul>'+d[3].map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div></div></div>').join('');
+  $('dq').innerHTML=QLIST.map((q,i)=>'<label class="check"><input type="checkbox" data-q="'+i+'"><div><div class="ct">'+esc(q)+'</div></div></label>').join('');
+  $('dq').querySelectorAll('input').forEach(i=>i.onchange=()=>i.closest('.check').classList.toggle('done',i.checked));}
 function renderCoverage(){
-  $('coverage').innerHTML=COVERAGE.map(c=>{const s=STATUS[c.status],tag=c.go?'button':'div',go=c.go?' data-go="'+esc(c.go)+'"':'';
-    return '<'+tag+' class="covtile '+s[0]+'"'+go+(c.go?' aria-label="'+esc(c.sys+' — '+s[1])+', view results"':'')+'><span class="st">'+s[1]+'</span><span class="sn">'+esc(c.sys)+'</span></'+tag+'>';}).join('');
+  $('coverage').innerHTML=COV_GROUPS.map(g=>'<div class="covgroup">'+g[0]+'</div><div class="covgrid">'+g[1].map(c=>{const s=STATUS[c.status],tag=c.go?'button':'div',go=c.go?' data-go="'+esc(c.go)+'"':'';
+    return '<'+tag+' class="covtile '+s[0]+'"'+go+(c.go?' aria-label="'+esc(c.sys+' — '+s[1])+', view results"':'')+'><span class="st">'+s[1]+'</span><span class="sn">'+esc(c.sys)+'</span></'+tag+'>';}).join('')+'</div>').join('');
   const block=(items,cls,lab)=>items.length?'<div class="tcol"><span class="lab '+cls+'">'+lab+'</span><ul class="tlist">'+items.map(t=>'<li><b>'+esc(t[0])+'</b><span class="why">'+esc(t[1])+'</span></li>').join('')+'</ul></div>':'';
   $('tests').innerHTML='<div class="testgrid">'+COVERAGE.filter(c=>c.important.length||c.optional.length).map(c=>{const s=STATUS[c.status];
-    return '<div class="testcard"><div class="th"><h3>'+esc((c.icon||'')+' '+c.sys)+'</h3><span class="stp '+s[0]+'">'+esc(s[1])+'</span></div>'+block(c.important,'lab-imp','❗ Important')+block(c.optional,'lab-opt','➖ Optional')+'</div>';}).join('')+'</div>';
+    return '<div class="testcard"><div class="th"><h3>'+esc(c.sys)+'</h3><span class="stp '+s[0]+'">'+esc(s[1])+'</span></div>'+block(c.important,'lab-imp','❗ Important')+block(c.optional,'lab-opt','➖ Optional')+'</div>';}).join('')+'</div>';
   $('screennote').innerHTML=SCREEN_NOTE;}
 function renderUnclear(){$('resolved').innerHTML=RESOLVED.map(r=>'<li><b>'+esc(r[0])+':</b> '+esc(r[1])+'</li>').join('');$('unclear').innerHTML=UNCLEAR.map(u=>'<div class="card"><h3 style="font-size:15px">'+esc(u[0])+'</h3><p class="note">'+esc(u[1])+'</p></div>').join('');}
 
-const INIT={overview:renderGlance,trends:()=>{renderCharts();renderProgress();},ahead:renderAhead,numbers:renderNumbers,map:renderMap,exercise:renderExercise,suggestions:renderSugg,doctors:()=>{renderDoctors();renderCoverage();renderChecklist();},unclear:renderUnclear};
+const INIT={overview:renderOverview,trends:()=>{renderCharts();renderProgress();},ahead:renderAhead,numbers:renderNumbers,map:renderMap,exercise:renderExercise,suggestions:renderSugg,doctors:()=>{renderDoctors();renderCoverage();renderChecklist();},unclear:renderUnclear};
 const did={};function initTab(id){if(did[id])return;(INIT[id]||function(){})();did[id]=true;}
-function showTab(id){document.querySelectorAll('.tabbtn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.id==='tab-'+id));initTab(id);if(id==='trends'){renderCharts();renderProgress();}window.scrollTo({top:0,behavior:REDUCE?'auto':'smooth'});}
+function showTab(id){if(speaking){speechSynthesis.cancel();speaking=false;setRA();}document.querySelectorAll('.tabbtn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.id==='tab-'+id));initTab(id);if(id==='trends'){renderCharts();renderProgress();}window.scrollTo({top:0,behavior:REDUCE?'auto':'smooth'});}
 $('tabrow').onclick=e=>{const b=e.target.closest('.tabbtn');if(b)showTab(b.dataset.tab);};
 $('bandChip').onclick=()=>{showBand=!showBand;$('bandChip').classList.toggle('on',showBand);renderCharts();};
 $('numSearch').oninput=e=>{numSearch=e.target.value.toLowerCase().trim();renderNumbers();};

@@ -18,6 +18,19 @@
 | TSH | 2.0 | 2.1 | 2.4 | µIU/mL | 0.35–4.94 | NORMAL | all three checkup files |
 | Hemoglobin | 14.0 | 14.2 | 14.5 | g/dL | 13.0–17.0 | NORMAL | all three checkup files |
 | ALT (SGPT) | 32 | 30 | 28 | U/L | 0–45 | NORMAL | all three checkup files |
+| Vitamin B12 | — | — | **>2000** | pg/mL | 200–900 | **HIGH — censored (above the assay's measurable limit)** | 12 Aug 2024 panel |
 
 **Plain-language note (example):** "LDL" is the cholesterol that builds up in artery walls; lower
 is better. Here it rose 120 → 130 → 140 (target < 100) — a number to discuss with a doctor.
+
+**Censored value (example):** Vitamin B12 was reported as **">2000"** — above the highest level the
+assay can measure. It is kept **with the ">" operator**, shown verbatim, and **never trended,
+projected, or treated as the bare number 2000** (a high B12 like this is commonly a supplement effect).
+
+**Imaging (example):** Liver ultrasound, 12 Aug 2024 — *Grade I (mild) fatty liver (hepatic
+steatosis).* Source: ultrasound report. Restated in plain words and framed calmly (grade I is the
+mild end and commonly improvable); not a diagnosis.
+
+**"Within normal variation" (example):** Hemoglobin 14.0 → 14.2 → 14.5 g/dL looks like a rise, but
+the change is smaller than haemoglobin's normal day-to-day variation, so it is marked **stable — not
+a real upward trend** (avoids over-reading noise).

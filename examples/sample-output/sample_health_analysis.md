@@ -22,16 +22,21 @@ stated allergies. (Three blood panels: 08 Aug 2023, 10 Feb 2024 and 12 Aug 2024.
   cluster to act on.
 - **HbA1c reached 5.7%** — the bottom of the "pre‑diabetes" band; worth watching now.
 - **Vitamin D improved** 22 → 28 → 35 (now in range) — supplement appears to be working. ✅
+- **Liver ultrasound: grade I (mild) fatty liver** (12 Aug 2024) — fits the metabolic picture; the
+  mild end, and commonly improvable with the same diet/activity steps. Calmly noted, not a diagnosis.
+- **Vitamin B12 reported ">2000"** (above the assay's limit — censored) — commonly a supplement
+  effect; kept verbatim and **not trended**. Worth a mention to the doctor.
 
 ## 4. Improving vs worsening
 | Improving | Worsening / watch |
 |---|---|
 | Vitamin D (22 → 35, now normal) | Total cholesterol, LDL, triglycerides (all rising) |
-| Hemoglobin steady | HbA1c (5.3 → 5.7, entered pre‑diabetic band) |
+| Hemoglobin steady *(apparent 14.0→14.5 rise is within normal variation — not a real trend)* | HbA1c (5.3 → 5.7, entered pre‑diabetic band) |
 
 ## 5. Interlink (example)
-Rising LDL/triglycerides **+** HbA1c creeping up → an **early metabolic pattern**. The *same*
-habits (less refined carb/sugar, daily movement) improve all of them together.
+Rising LDL/triglycerides **+** HbA1c creeping up **+ a mild (grade I) fatty liver** → an **early
+metabolic pattern**. The *same* habits (less refined carb/sugar, daily movement) improve all of
+them together.
 **What you can do:** swap some white rice for millets, walk ~30 min most days, cut sugary drinks
 — then recheck lipids and HbA1c.
 
@@ -53,9 +58,11 @@ habits (less refined carb/sugar, daily movement) improve all of them together.
 > General AI suggestions, **not** personalised to full history; **no medicines or doses**. Coverage
 > is marked **only from the actual reports** — never inferred.
 
-**Coverage so far:** ✅ checked — blood sugar/metabolic, cholesterol/heart-risk bloods, thyroid,
-liver, blood count, vitamins. 🟡 partly — heart (risk seen via bloods, but no BP/ECG/echo).
-⭕ not assessed — kidney, eyes, bones/joints, abdominal imaging.
+**Coverage so far** (whole-body view — the gaps are listed too): ✅ checked — blood sugar/metabolic,
+cholesterol/heart-risk bloods, thyroid, liver, blood count, iron & vitamins, abdominal organs (liver
+ultrasound). 🟡 partly — heart (risk via bloods; no BP/ECG/echo). ⭕ not assessed — kidney & urinary,
+inflammation, electrolytes, hormones, lungs, brain/nervous, digestive, bones/joints, eyes, ears,
+skin, dental, mental wellbeing, body measurements (BP/BMI).
 
 **Tests to discuss:**
 
